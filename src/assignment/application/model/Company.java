@@ -13,7 +13,7 @@ public class Company
 
     }
 
-    public Company(String companyID, String companyName, String abnNumber, String companyURL, String address)
+    public void setAll (String companyID, String companyName, String abnNumber, String companyURL, String address)
     {
         this.companyID = companyID;
         this.companyName = companyName;

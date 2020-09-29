@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="280.0" prefWidth="420.0" stylesheets="@Theme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="280.0" prefWidth="420.0" stylesheets="@Theme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assignment.application.ui.ProjectOwnerController">
    <children>
       <GridPane layoutX="200.0" layoutY="195.0" stylesheets="@Theme.css" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <columnConstraints>
@@ -75,39 +75,39 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </Label>
-            <TextField GridPane.columnIndex="1">
+            <TextField fx:id="txt_id" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </TextField>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <TextField fx:id="txt_firstName" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </TextField>
-            <TextField layoutX="173.0" layoutY="55.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <TextField fx:id="txt_lastName" layoutX="173.0" layoutY="55.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </TextField>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="txt_role" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </TextField>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <TextField fx:id="txt_emailID" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </TextField>
-            <ComboBox maxHeight="25.0" prefWidth="227.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <ComboBox fx:id="cmb_company" maxHeight="25.0" prefWidth="227.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </ComboBox>
          </children>
       </GridPane>
-      <Button layoutX="239.0" layoutY="215.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Add" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="100.0" />
-      <Button layoutX="326.0" layoutY="215.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Cancel" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="15.0" />
+      <Button fx:id="btn_ok" layoutX="239.0" layoutY="215.0" mnemonicParsing="false" onAction="#handleOk" prefHeight="25.0" prefWidth="80.0" text="Add" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="100.0" />
+      <Button fx:id="btn_cancel" layoutX="326.0" layoutY="215.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="80.0" text="Cancel" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="15.0" />
    </children>
 </AnchorPane>

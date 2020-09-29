@@ -25,7 +25,7 @@
                   <Font name="Calibri Bold" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="btn_project" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" stylesheets="@Theme.css" text="Project" textFill="WHITE">
+            <Button fx:id="btn_owner" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" stylesheets="@Theme.css" text="Project Owner" textFill="WHITE">
                <padding>
                   <Insets left="50.0" />
                </padding>
@@ -33,7 +33,7 @@
                   <Font name="Calibri Bold" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="btn_owner" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" stylesheets="@Theme.css" text="Project Owner" textFill="WHITE">
+            <Button fx:id="btn_project" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" stylesheets="@Theme.css" text="Project" textFill="WHITE">
                <padding>
                   <Insets left="50.0" />
                </padding>
@@ -60,6 +60,38 @@
          </children></VBox>
       <AnchorPane layoutX="180.0" prefHeight="600.0" prefWidth="620.0" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
+            <Pane fx:id="pn_company" prefHeight="480.0" prefWidth="620.0" styleClass="panel" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
+               <children>
+                  <GridPane fx:id="grd_company" prefHeight="460.0" prefWidth="620.0" stylesheets="@Theme.css">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="439.0" minHeight="10.0" prefHeight="396.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="200.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <TableView fx:id="tbl_company" prefHeight="200.0" prefWidth="200.0">
+                           <columns>
+                              <TableColumn fx:id="col_companyId" prefWidth="70.0" text="ID" />
+                              <TableColumn fx:id="col_companyName" prefWidth="120.0" text="NAME" />
+                              <TableColumn prefWidth="100.0" text="ABN NUMBER" />
+                              <TableColumn prefWidth="140.0" text="URL" />
+                              <TableColumn prefWidth="150.0" text="ADDRESS" />
+                           </columns>
+                        </TableView>
+                        <Button fx:id="btn_addCompany" mnemonicParsing="false" onAction="#handleAddCompany" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Company" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </Button>
+                     </children>
+                  </GridPane>
+               </children>
+            </Pane>
             <Pane fx:id="pn_owner" layoutY="120.0" prefHeight="480.0" prefWidth="620.0" styleClass="panel" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
                <children>
                   <GridPane fx:id="grd_owner" prefHeight="460.0" prefWidth="620.0" stylesheets="@Theme.css">
@@ -83,7 +115,7 @@
                               <TableColumn maxWidth="120.0" minWidth="100.0" prefWidth="100.0" text="COMPANY ID" />
                            </columns>
                         </TableView>
-                        <Button fx:id="btn_addOwner" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Project Owner" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Button fx:id="btn_addOwner" mnemonicParsing="false" onAction="#handleAddOwner" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Project Owner" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -114,68 +146,7 @@
                               <TableColumn minWidth="150.0" prefWidth="150.0" text="REQUIRED SKILL" />
                            </columns>
                         </TableView>
-                        <Button fx:id="btn_addProject" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Project" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                  </GridPane>
-               </children></Pane>
-            <Pane fx:id="pn_company" prefHeight="480.0" prefWidth="620.0" styleClass="panel" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
-               <children>
-                  <GridPane fx:id="grd_company" prefHeight="460.0" prefWidth="620.0" stylesheets="@Theme.css">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="439.0" minHeight="10.0" prefHeight="396.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="200.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <children>
-                        <TableView fx:id="tbl_company" prefHeight="200.0" prefWidth="200.0">
-                           <columns>
-                              <TableColumn fx:id="col_companyId" prefWidth="70.0" text="ID" />
-                              <TableColumn fx:id="col_companyName" prefWidth="120.0" text="NAME" />
-                              <TableColumn prefWidth="100.0" text="ABN NUMBER" />
-                              <TableColumn prefWidth="140.0" text="URL" />
-                              <TableColumn prefWidth="150.0" text="ADDRESS" />
-                           </columns>
-                        </TableView>
-                        <Button fx:id="btn_addCompany" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Company" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                  </GridPane>
-               </children></Pane>
-            <Pane fx:id="pn_team" layoutY="120.0" prefHeight="480.0" prefWidth="620.0" styleClass="panel" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
-               <children>
-                  <GridPane fx:id="grd_team" prefHeight="460.0" prefWidth="620.0" stylesheets="@Theme.css">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="439.0" minHeight="10.0" prefHeight="396.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="200.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <children>
-                        <TableView fx:id="tbl_team" prefHeight="200.0" prefWidth="200.0">
-                           <columns>
-                              <TableColumn fx:id="col_teamID" maxWidth="120.0" minWidth="100.0" prefWidth="100.0" text="ID" />
-                              <TableColumn fx:id="col_team" maxWidth="220.0" minWidth="140.0" prefWidth="140.0" text="TEAM LEADER" />
-                              <TableColumn maxWidth="400.0" minWidth="200.0" prefWidth="200.0" text="TEAM MEMBER" />
-                              <TableColumn minWidth="160.0" prefWidth="160.0" text="TEAM SD" />
-                           </columns>
-                        </TableView>
-                        <Button fx:id="btn_formTeam" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Form/Edit Team" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <Button fx:id="btn_addProject" mnemonicParsing="false" onAction="#handleAddProject" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Project" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -210,7 +181,45 @@
                               <Insets />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="btn_editStudent" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Read Student" GridPane.rowIndex="1" />
+                        <Button fx:id="btn_readStudent" mnemonicParsing="false" onAction="#handleReadStudent" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Read Student" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin></Button>
+                        <Button fx:id="btn_addPreference" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Prefernce" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="140.0" />
+                           </GridPane.margin>
+                        </Button>
+                     </children>
+                  </GridPane>
+               </children></Pane>
+            <Pane fx:id="pn_team" layoutY="120.0" prefHeight="480.0" prefWidth="620.0" styleClass="panel" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
+               <children>
+                  <GridPane fx:id="grd_team" prefHeight="460.0" prefWidth="620.0" stylesheets="@Theme.css">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="439.0" minHeight="10.0" prefHeight="396.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="200.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <TableView fx:id="tbl_team" prefHeight="200.0" prefWidth="200.0">
+                           <columns>
+                              <TableColumn fx:id="col_teamID" maxWidth="120.0" minWidth="100.0" prefWidth="100.0" text="ID" />
+                              <TableColumn fx:id="col_team" maxWidth="220.0" minWidth="140.0" prefWidth="140.0" text="TEAM LEADER" />
+                              <TableColumn maxWidth="400.0" minWidth="200.0" prefWidth="200.0" text="TEAM MEMBER" />
+                              <TableColumn minWidth="160.0" prefWidth="160.0" text="TEAM SD" />
+                           </columns>
+                        </TableView>
+                        <Button fx:id="btn_formTeam" mnemonicParsing="false" onAction="#handleAddTeam" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Form/Edit Team" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </Button>
                      </children>
                   </GridPane>
                </children></Pane>

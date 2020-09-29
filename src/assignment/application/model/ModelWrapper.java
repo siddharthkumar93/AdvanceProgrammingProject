@@ -15,7 +15,7 @@ import java.util.TreeSet;
 import assignment.application.GlobalVar;
 import assignment.application.data.FileReadWrite;
 
-public class ModelWrapper 
+public class ModelWrapper
 {
 
     transient Scanner input = new Scanner(System.in);
@@ -28,8 +28,6 @@ public class ModelWrapper
     private TreeMap<String, Student> student;
     private TreeMap<String, Team> team;
 
-    private static boolean enableMetric;
-
     public ModelWrapper()
     {
         student = new TreeMap<String, Student>();
@@ -37,253 +35,68 @@ public class ModelWrapper
         project = new TreeMap<String, Project>();
         projectOwner = new TreeMap<String, ProjectOwner>();
         team = new TreeMap<String, Team>();
-        enableMetric = false;
     }
 
-    public boolean isEnableMetric()
+    public void addCompany(Company objCompany)
     {
-        return (team.size() > 0 ? true : false);
-    }
-
-    public void teamMetrics()
-    {
-        boolean flag = true;
-        int option;
-        String projID;
-        if (isEnableMetric())
-        {
-            while (flag)
-            {
-                System.out.println("\n\t Team Metric Menu \r\n" + "1. Average student skill competency \r\n"
-                            + "2. First and Second preferences students Percentage \r\n" + "3. Skills shortfall for each project \r\n"
-                            + "4. Calculate Standard Deviation for the team \r\n" + "0. Previous Menu");
-                option = input.nextInt();
-                input.nextLine();
-
-                switch (option) {
-                case 1:
-                    showAvgTeamCompetancy();
-                    break;
-
-                case 2:
-                    preferncePercentage();
-                    break;
-
-                case 3:
-                    skillShortage();
-                    break;
-
-                case 4:
-                    sdCalculate();
-                    break;
-
-                case 0:
-                    return;
-
-                default:
-                    System.out.println(GlobalVar.formatIncorrectOption);
-                }
-            }
-        }
-        else
-        {
-            System.out.println("Team metric menu is currently disabled. \r\n" + "Please form a team to enable this menu!!");
-        }
-    }
-
-    private void sdCalculate()
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    private void skillShortage()
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public void fix()
-    {
-        input = new Scanner(System.in);
-        data = new FileReadWrite();
-    }
-
-    public void addCompany()
-    {
-        System.out.println("\n\t Adding new company \n");
-        boolean flag = true;
-        String name, address, url, companyId, abn;
-        String more;
-
-        if (input.equals(null))
-        {
-            System.out.println("Gotcha");
-        }
-
-        while (flag)
-        {
-
-            try
-            {
-                System.out.println("Enter Company ID (Enter number only, without C prefix)");
-                companyId = "C" + Integer.parseInt(input.nextLine());
-
-                System.out.println("Enter Company Name");
-                name = input.nextLine();
-
-                System.out.println("Enter Company ABN");
-                abn = input.nextLine();
-
-                System.out.println("Enter Company Address");
-                address = input.nextLine();
-
-                System.out.println("Enter Company URL");
-                url = input.nextLine();
-
-                company.put(companyId, new Company(companyId, name, abn, url, address));
-
-                System.out.println("Do you want to add more company? Yes - Y/y | No - N/n");
-                more = input.nextLine();
-
-                if (more.equals("Y") || more.equals("y"))
-                {
-                    flag = true;
-                }
-                else if (more.equals("N") || more.equals("n"))
-                {
-                    flag = false;
-                }
-                else
-                {
-                    System.out.println("Input not recognized, reverting to previous menu");
-                    flag = false;
-                }
-
-            }
-            catch (Exception exp)
-            {
-                System.out.println("Inccorect input format. Please enter values in the required format");
-            }
-        }
-
+        company.put(objCompany.getCompanyID(), objCompany);
         data.writeCompany(company);
     }
 
-    public void addProjectOwner()
+    public void addProjectOwner(ProjectOwner owner)
     {
-        System.out.println("\n\t Adding new Project Ownner \n");
-        boolean flag = true;
-        String firstName, lastName, ownerID, role, emailID, companyID;
-        String more;
-
-        while (flag)
-        {
-            try
-            {
-                System.out.println("Enter first name of project owner");
-                firstName = input.nextLine();
-
-                System.out.println("Enter last name of project owner");
-                lastName = input.nextLine();
-
-                System.out.println("Enter owner ID (enter interger without Own prefix)");
-                ownerID = "Own" + Integer.parseInt(input.nextLine());
-
-                System.out.println("Enter owner role");
-                role = input.nextLine();
-
-                System.out.println("Enter owner e-mail id");
-                emailID = input.nextLine();
-
-                System.out.println("Enter owner company id (enter interger without C prefix)");
-                companyID = "C" + Integer.parseInt(input.nextLine());
-
-                projectOwner.put(ownerID, new ProjectOwner(firstName, lastName, ownerID, role, emailID, companyID));
-
-                System.out.println("Do you want to add more project owner? Yes - Y/y | No - N/n");
-                more = input.nextLine();
-
-                if (more.equals("Y") || more.equals("y"))
-                {
-                    flag = true;
-                }
-                else if (more.equals("N") || more.equals("n"))
-                {
-                    flag = false;
-                }
-                else
-                {
-                    System.out.println("Input not recognized, reverting to previous menu");
-                    flag = false;
-                }
-
-            }
-            catch (Exception exp)
-            {
-                System.out.println("Inccorect input format. Please enter values in the required format");
-            }
-        }
-
+        projectOwner.put(owner.getOwnerID(), owner);
         data.writeOwners(projectOwner);
     }
 
-    public void addProject()
+    public void addProject(Project objProject)
     {
-        System.out.println("\t Adding new Project");
-        boolean flag = true;
-        String title, projectID, description, ownerID, ranking;
-        String more;
-
-        while (flag)
-        {
-
-            try
-            {
-                System.out.println("Enter title of Project");
-                title = input.nextLine();
-
-                System.out.println("Enter the project ID (enter interger without PR prefix)");
-                projectID = "PR" + Integer.parseInt(input.nextLine());
-
-                System.out.println("Enter the project description");
-                description = input.nextLine();
-
-                System.out.println("Enter owner ID (enter interger without Own prefix)");
-                ownerID = "Own" + Integer.parseInt(input.nextLine());
-
-                // todo implement input check
-                System.out.println("Enter the ranking (Eg. W 4 P 3 N 2 A 1)");
-                ranking = input.nextLine();
-
-                project.put(projectID, new Project(title, projectID, description, ownerID, ranking));
-
-                System.out.println("Do you want to add more project owner? Yes - Y/y | No - N/n");
-                more = input.nextLine();
-
-                if (more.equals("Y") || more.equals("y"))
-                {
-                    flag = true;
-                }
-                else if (more.equals("N") || more.equals("n"))
-                {
-                    flag = false;
-                }
-                else
-                {
-                    System.out.println("Input not recognized, reverting to previous menu");
-                    flag = false;
-                }
-
-            }
-            catch (Exception exp)
-            {
-                System.out.println("Inccorect input format. Please enter values in the required format");
-            }
-
-        }
-
+        project.put(objProject.getProjectID(), objProject);
         data.writeProject(project);
+    }
+
+    public void addTeam(Team objTeam)
+    {
+        team.put(objTeam.getTeamID(), objTeam);
+        //team.get(objTeam.getTeamID()).setAvgStudentSkillMap(student);
+    }
+
+    public Set<String> getCompanyList()
+    {
+        return company.keySet();
+    }
+
+    public Set<String> getProjectOwnerList()
+    {
+        return projectOwner.keySet();
+    }
+
+    public Set<String> getProjectList()
+    {
+        return project.keySet();
+    }
+
+    public Set<String> getStudentList()
+    {
+        return student.keySet();
+    }
+
+    public void readAll()
+    {
+        readStudentInfo();
+        readProject();
+        readStudentPreference();
+    }
+
+    public void readProject()
+    {
+
+        String[][] content = data.readFile("projects.txt");
+
+        for (int i = 0; i < content.length; i++)
+        {
+            project.put(content[i][1].strip(), new Project(content[i][0], content[i][1], content[i][2], content[i][3], content[i][4]));
+        }
     }
 
     public void readStudent()
@@ -324,17 +137,6 @@ public class ModelWrapper
         {
             id = content[i][0].trim().toUpperCase();
             student.get(id).setPreferenceString(content[i][1].strip());
-        }
-    }
-
-    public void readProject()
-    {
-
-        String[][] content = data.readFile("projects.txt");
-
-        for (int i = 0; i < content.length; i++)
-        {
-            project.put(content[i][1].strip(), new Project(content[i][0], content[i][1], content[i][2], content[i][3], content[i][4]));
         }
     }
 
@@ -698,60 +500,7 @@ public class ModelWrapper
     }
 
     // Function to form new teams while checking for existing constraints
-    public void formTeam()
-    {
-        boolean flag = true;
-        String projectID, teamID;
-        String[] tempMembers;
-
-        if (student.isEmpty() || project.isEmpty())
-        {
-            readStudentInfo();
-            readProject();
-            readStudentPreference();
-        }
-
-        availbeTeamMember = student.keySet();
-
-        if (!student.isEmpty())
-        {
-            System.out.print("Here's the list of existing projects : ");
-            System.out.print(project.keySet());
-
-            while (flag)
-            {
-                System.out.println("\nEnter the Project ID to form Team (Press q/Q to return to previous menu)");
-                projectID = input.nextLine();
-
-                if (projectID.equalsIgnoreCase("Q"))
-                {
-                    System.out.println("Returing to previous menu");
-                    flag = false;
-                }
-                else if (project.containsKey(projectID.toUpperCase()))
-                {
-                    // suggestedMember();
-                    tempMembers = teamMemberSelection();
-
-                    if (!tempMembers.equals(null))
-                    {
-                        teamID = "Team" + (team.size() + 1);
-                        team.put(projectID, new Team(teamID, tempMembers));
-                        System.out.println(teamID + " formed");
-                        //availbeTeamMember.removeAll(Arrays.asList(tempMembers));
-                        team.get(projectID).setAvgStudentSkillMap(student);
-                    }
-                }
-                else
-                {
-                    System.out.println("Entered Project ID not found");
-                }
-
-            }
-
-        }
-
-    }
+    
 
     public void showAvgTeamCompetancy()
     {
@@ -759,9 +508,9 @@ public class ModelWrapper
         {
             System.out.println(entry.getKey().toUpperCase() + " : \t" + entry.getValue().getTeamID());
             System.out.println("Team Members : " + Arrays.toString(entry.getValue().getTeamMembers()));
-           
+
             System.out.println("Average student skill competency for project : " + entry.getValue().getAverageStudentSkill());
-            
+
         }
     }
 
@@ -780,4 +529,3 @@ public class ModelWrapper
         }
     }
 }
-

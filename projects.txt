@@ -1,0 +1,4 @@
+CRM 01; PR1; CRM tool for handling customer relations; Own1; A 2 N 3 P 4 W 1 ;
+CRM 02; PR2; CRM tool for small business; Own2; A 4 N 3 P 2 W 1 ;
+ERM 01; PR3; ERM tool for handling customer relations; Own1; A 1 N 3 P 4 W 2 ;
+ERM 02; PR4; ERM tool for small business; Own2; A 3 N 2 P 4 W 1 ;

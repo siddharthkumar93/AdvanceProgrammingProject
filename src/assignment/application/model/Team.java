@@ -1,25 +1,26 @@
 package assignment.application.model;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class Team 
+public class Team
 {
-
-
     private String teamID;
+    private String teamName;
     private String[] teamMembers;
     private float avgStudentSkill;
     Map<String, Integer> avgStudentSkillMap;
 
     public Team()
     {
-        // TODO Auto-generated constructor stub
+        
     }
 
-    public Team(String teamID, String[] teamMembers)
+    public void setAll(String teamID, String teamName, String[] teamMembers)
     {
         this.teamID = teamID;
+        this.teamName = teamName;
         this.teamMembers = teamMembers;
         avgStudentSkillMap = new HashMap<String, Integer>();
     }
@@ -47,6 +48,16 @@ public class Team
     public Map<String, Integer> getAvgStudentSkillMap()
     {
         return this.avgStudentSkillMap;
+    }
+
+    public String getTeamName()
+    {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName)
+    {
+        this.teamName = teamName;
     }
 
     public void setAvgStudentSkillMap(Map<String, Student> student)
@@ -79,4 +90,5 @@ public class Team
 
         this.avgStudentSkill = total / 4;
     }
+
 }

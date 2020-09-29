@@ -12,7 +12,7 @@ public class Project
     private String projectID;
     private String description;
     private String ownerID;
-    private Map<String, Integer> ranking;
+    private TreeMap<String, Integer> ranking;
 
     public Project()
     {
@@ -27,6 +27,16 @@ public class Project
         this.ownerID = ownerID;
         this.ranking = new TreeMap<String, Integer>();
         setRanking(ranking);
+    }
+    
+    public void setAll(String title, String projectID, String description, String ownerID, TreeMap<String, Integer> ranking)
+    {
+        this.title = title;
+        this.projectID = projectID;
+        this.description = description;
+        this.ownerID = ownerID;
+        // this works for now, may cause issues later
+        this.ranking = ranking;
     }
 
     public String getTitle()

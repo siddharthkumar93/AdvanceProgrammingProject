@@ -15,7 +15,7 @@ public class ProjectOwner
 
     }
 
-    public ProjectOwner(String firstName, String lastName, String ownerID, String role, String emailID, String companyID)
+    public void setAll(String firstName, String lastName, String ownerID, String role, String emailID, String companyID)
     {
         this.firstName = firstName;
         this.lastName = lastName;
