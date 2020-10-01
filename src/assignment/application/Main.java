@@ -7,7 +7,6 @@ import assignment.application.model.Company;
 import assignment.application.model.ModelWrapper;
 import assignment.application.model.Project;
 import assignment.application.model.ProjectOwner;
-import assignment.application.model.Team;
 import assignment.application.ui.CompanyController;
 import assignment.application.ui.DashboardController;
 import assignment.application.ui.ProjectController;
@@ -133,7 +132,7 @@ public class Main extends Application
             return false;
         }
     }
-    
+
     public boolean showAddProject(Project project, Set<String> ownerList)
     {
         try
@@ -169,8 +168,8 @@ public class Main extends Application
             return false;
         }
     }
-    
-    public boolean showAddTeam(Team team, Set<String> studentList, Set<String> projectList)
+
+    public void showAddTeam(Set<String> studentList, Set<String> projectList)
     {
         try
         {
@@ -184,26 +183,24 @@ public class Main extends Application
             dialogStage.setTitle("Create/Edit Team");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
-            dialogStage.setResizable(false);
+            //dialogStage.setResizable(false);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
             // Set the person into the controller.
             TeamController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setTeam(team);
             controller.setProjectList(projectList);
             controller.setStudentList(studentList);
+            controller.setWrapper(wrapper);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
 
-            return controller.isOkClicked();
         }
         catch (IOException expection)
         {
             expection.printStackTrace();
-            return false;
         }
     }
 }

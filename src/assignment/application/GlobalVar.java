@@ -3,7 +3,7 @@ package assignment.application;
 public class GlobalVar{
 	
 	static boolean showTeamStats = false;
-	static enum ContentType {APPLICATION, BOOK, MAGAZINE}
+	
 	static String formatSemiColon = " ; ";
 	static String formatEndLong = " ----------------------------------------------- ";
 	static String formatEndUderline = "_____________________________________________";

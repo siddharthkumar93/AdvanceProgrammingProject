@@ -1,10 +1,9 @@
 package assignment.application.model;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.SortedMap;
@@ -12,7 +11,6 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import assignment.application.GlobalVar;
 import assignment.application.data.FileReadWrite;
 
 public class ModelWrapper
@@ -20,7 +18,6 @@ public class ModelWrapper
 
     transient Scanner input = new Scanner(System.in);
     transient FileReadWrite data = new FileReadWrite();
-    transient private Set<String> availbeTeamMember;
 
     private TreeMap<String, Company> company;
     private TreeMap<String, Project> project;
@@ -58,7 +55,14 @@ public class ModelWrapper
     public void addTeam(Team objTeam)
     {
         team.put(objTeam.getTeamID(), objTeam);
-        //team.get(objTeam.getTeamID()).setAvgStudentSkillMap(student);
+        team.get(objTeam.getTeamID()).setAvgStudentSkillMap(student);
+        team.get(objTeam.getTeamID()).setPreferncePercentage(student);
+        team.get(objTeam.getTeamID()).setTotalSkillGap(project.get(objTeam.getTeamID()));
+    }
+    
+    public TreeMap<String, Team> getTeam()
+    {
+        return team;
     }
 
     public Set<String> getCompanyList()
@@ -90,7 +94,6 @@ public class ModelWrapper
 
     public void readProject()
     {
-
         String[][] content = data.readFile("projects.txt");
 
         for (int i = 0; i < content.length; i++)
@@ -139,19 +142,55 @@ public class ModelWrapper
             student.get(id).setPreferenceString(content[i][1].strip());
         }
     }
+    
+    public boolean confictCheck(ArrayList<String> tempMember, String studentID)
+    {
+        boolean confictFlag = false;
 
+        for (String memberID : tempMember)
+        {
+            if (memberID != null)
+            {
+                for (String confict : student.get(memberID).getConflict())
+                {
+                    if (confict.equalsIgnoreCase(studentID))
+                    {
+                        confictFlag = true;
+                    }
+                }
+
+                for (String confict : student.get(studentID).getConflict())
+                {
+                    if (confict.equalsIgnoreCase(memberID))
+                    {
+                        confictFlag = true;
+                    }
+                }
+            }
+        }
+        return confictFlag;
+    }
+    
+    public boolean teamPersonalityCheck(ArrayList<String> teamMembers)
+    {
+        boolean flag = false;
+        
+        for(String studentID: teamMembers)
+        {
+            if(student.get(studentID).getPersonality() == 'A')
+            {
+                flag = true;
+            }
+        }    
+        return flag;
+    }
+
+    //need update
     public void capturePersonalities(boolean readStudent)
     {
-
         boolean flag = true;
         String studentID, temp, tempConflict = "";
-        char personality;
-
-        if (readStudent)
-        {
-            readStudent();
-            System.out.println("Student file read");
-        }
+        char personality = ' ';
 
         while (flag)
         {
@@ -162,56 +201,24 @@ public class ModelWrapper
                 studentID = input.nextLine().trim().toUpperCase();
                 temp = " ";
 
-                if (studentID.equals("Q"))
+                 student.get(studentID).setPersonality(personality);
+                    
+
+                System.out.println("Enter the conflict students id (upto 2 eg. S10 s20)");
+                temp = input.nextLine();
+
+                // This code can be improved
+                if (!temp.isBlank())
                 {
-                    flag = false;
+                    tempConflict = temp.toUpperCase();
+                    System.out.println("Student conflicts recorded");
                 }
                 else
                 {
-
-                    if (student.containsKey(studentID))
-                    {
-                        System.out.println("Student found with following details");
-                        System.out.println(student.get(studentID).toString());
-
-                        if (student.get(studentID).getPersonality() == ' ')
-                        {
-                            System.out.println("Enter the personality of Student");
-                            personality = input.nextLine().toUpperCase().charAt(0);
-
-                            if (personalityCheck(personality))
-                            {
-                                student.get(studentID).setPersonality(personality);
-                            }
-                            else
-                            {
-                                System.out.println("Assign a different grade.");
-                            }
-
-                        }
-
-                        System.out.println("Enter the conflict students id (upto 2 eg. S10 s20)");
-                        temp = input.nextLine();
-
-                        // This code can be improved
-                        if (!temp.isBlank())
-                        {
-                            tempConflict = temp.toUpperCase();
-                            System.out.println("Student conflicts recorded");
-                        }
-                        else
-                        {
-                            System.out.println("No student conflicts recorded");
-                        }
-
-                        student.get(studentID).setConflict(tempConflict);
-                    }
-                    else
-                    {
-                        System.out.println("Enter student id doesn't exist");
-                    }
-
+                    System.out.println("No student conflicts recorded");
                 }
+
+                student.get(studentID).setConflict(tempConflict);
 
             }
             catch (Exception exp)
@@ -224,132 +231,9 @@ public class ModelWrapper
         data.writeStudent(student, "studentinfo.txt");
     }
 
-    public void updatePersonalityCount()
+    public void updatePreferences()
     {
-        char temp;
-
-        for (Map.Entry<String, Student> entry : student.entrySet())
-        {
-            temp = entry.getValue().getPersonality();
-
-            switch (temp) {
-            case 'A':
-                GlobalVar.countA++;
-                break;
-
-            case 'B':
-                GlobalVar.countB++;
-                break;
-
-            case 'C':
-                GlobalVar.countC++;
-                break;
-
-            case 'D':
-                GlobalVar.countD++;
-                break;
-            }
-
-        }
-
-    }
-
-    public boolean personalityCheck(char type)
-    {
-        int limit = student.size() / 4;
-
-        // updatePersonalityCount();
-        switch (type) {
-        case 'A':
-            GlobalVar.countA++;
-            break;
-
-        case 'B':
-            GlobalVar.countB++;
-            break;
-
-        case 'C':
-            GlobalVar.countC++;
-            break;
-
-        case 'D':
-            GlobalVar.countD++;
-            break;
-        }
-
-        if (GlobalVar.countA > limit || GlobalVar.countB > limit || GlobalVar.countC > limit || GlobalVar.countD > limit)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-
-    }
-
-    public void preferences()
-    {
-
-        String studentID, projID;
-        boolean flag = true;
-
-        System.out.println("\n\t Updating student project preference \n");
-
-        while (flag)
-        {
-
-            try
-            {
-                System.out.print("List of existing project : ");
-
-                for (Map.Entry<String, Project> entry : project.entrySet())
-                {
-                    System.out.print(entry.getKey() + " ");
-                }
-
-                System.out.println("\n Enter the student ID for updating prefernece (Press Q/q to go back)");
-                studentID = input.nextLine().trim().toUpperCase();
-
-                if (studentID.equals("Q"))
-                {
-                    flag = false;
-                }
-                else
-                {
-
-                    if (student.containsKey(studentID))
-                    {
-                        int i = 4;
-
-                        do
-                        {
-                            System.out.println("Enter the Project IDs for prefernce rating " + i);
-                            projID = input.nextLine().strip().toUpperCase();
-
-                            if (project.containsKey(projID))
-                            {
-                                student.get(studentID).getPreference().put(projID, i);
-                                i--;
-                            }
-                            else
-                            {
-                                System.out.println("Entered project entered doesn't exist. Please enter the existing project");
-                            }
-
-                        } while (i > 0);
-
-                        System.out.println("Prefernce updated");
-                    }
-                }
-            }
-            catch (Exception exp)
-            {
-                System.out.println("Incorrect input format. Please enter values in the required format");
-            }
-
-        }
-
+        // student.get(studentID).getPreference().put(projID, i);
         data.writeStudent(student, "preferences.txt");
     }
 
@@ -396,136 +280,15 @@ public class ModelWrapper
         System.out.println(sortedset);
     }
 
-    public void suggestedMember()
+    public Map<String, Project> getProjectMap()
     {
-
+        return project;
     }
-
-    // Function to select students for each team
-    public String[] teamMemberSelection()
-    {
-        boolean personalityFlag = true;
-        String studentID, choice;
-        String[] tempMember = new String[4];
-
-        do
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                System.out.println("Enter the Student ID for team member : " + (i + 1));
-                studentID = input.nextLine().toUpperCase();
-
-                if (availbeTeamMember.contains(studentID))
-                {
-                    if (tempMember[0] != null)
-                    {
-                        if (confictCheck(tempMember, studentID))
-                        {
-                            System.out.println("Press Y/y to continue addding this student to team");
-                            choice = input.nextLine();
-
-                            if (choice.equalsIgnoreCase("Y"))
-                            {
-                                tempMember[i] = studentID;
-                            }
-                            else
-                            {
-                                i--;
-                            }
-                        }
-                        else
-                        {
-                            tempMember[i] = studentID;
-                        }
-                    }
-                    else
-                    {
-                        tempMember[0] = studentID;
-                    }
-
-                    if (student.get(tempMember[i]).getPersonality() == 'A')
-                    {
-                        personalityFlag = false;
-                    }
-                }
-                else
-                {
-                    System.out.println("Entered Student ID is not available");
-                    i--;
-                }
-
-            }
-
-            if (personalityFlag)
-            {
-                System.out.println("The Team formed doesn't have atleast one student of personlity type A.");
-                System.out.println("Please reform the team.");
-            }
-
-        } while (personalityFlag);
-
-        return tempMember;
-
-    }
-
-    private boolean confictCheck(String[] tempMember, String studentID)
-    {
-
-        boolean confictFlag = false;
-
-        for (String memberID : tempMember)
-        {
-            if (memberID != null)
-            {
-                for (String confict : student.get(memberID).getConflict())
-                {
-                    if (confict.equalsIgnoreCase(studentID))
-                    {
-                        System.out.println("Warning!!! Student : " + memberID + " has a confict with " + studentID);
-                        confictFlag = true;
-                    }
-                }
-
-                for (String confict : student.get(studentID).getConflict())
-                {
-                    if (confict.equalsIgnoreCase(memberID))
-                    {
-                        System.out.println("Warning!!! Student : " + studentID + " has a confict with " + memberID);
-                        confictFlag = true;
-                    }
-                }
-            }
-        }
-        return confictFlag;
-    }
-
-    // Function to form new teams while checking for existing constraints
     
-
-    public void showAvgTeamCompetancy()
+    public Map<String, Student> getStudentMap()
     {
-        for (Entry<String, Team> entry : team.entrySet())
-        {
-            System.out.println(entry.getKey().toUpperCase() + " : \t" + entry.getValue().getTeamID());
-            System.out.println("Team Members : " + Arrays.toString(entry.getValue().getTeamMembers()));
-
-            System.out.println("Average student skill competency for project : " + entry.getValue().getAverageStudentSkill());
-
-        }
+        return student;
     }
 
-    public void preferncePercentage()
-    {
-        String key;
-        Map<String, Integer> skillMap;
-        for (Entry<String, Team> teamEntry : team.entrySet())
-        {
-            key = teamEntry.getKey();
-            skillMap = project.get(key).getRanking();
-            for (Entry<String, Integer> skillEntry : skillMap.entrySet())
-            {
-
-            }
-        }
-    }
+  
 }

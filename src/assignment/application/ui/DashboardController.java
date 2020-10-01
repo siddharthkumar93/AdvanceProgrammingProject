@@ -1,11 +1,11 @@
 package assignment.application.ui;
 
 import assignment.application.Main;
+import assignment.application.data.DatabaseReadWrite;
 import assignment.application.model.Company;
 import assignment.application.model.ModelWrapper;
 import assignment.application.model.Project;
 import assignment.application.model.ProjectOwner;
-import assignment.application.model.Team;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -19,10 +19,11 @@ public class DashboardController
     private Pane pn_company, pn_project, pn_owner, pn_student, pn_team;
 
     @FXML
-    private Button btn_company, btn_project, btn_owner, btn_student, btn_team;
+    private Button btn_company, btn_project, btn_owner, btn_student, btn_team, btn_dbInitialize, btn_dbRead, btn_dbWrite;
 
     private Main mainApp;
     private ModelWrapper wrapper;
+    private DatabaseReadWrite dbWrite;
 
     // To return reference to itself
     public void setMainApp(Main mainApp)
@@ -59,6 +60,25 @@ public class DashboardController
         {
             pn_team.toFront();
         }
+        else if (event.getSource() == btn_dbInitialize)
+        {
+            dbWrite = new DatabaseReadWrite();
+        }
+        else if (event.getSource() == btn_dbRead)
+        {
+            dbWrite.readProject();
+            dbWrite.readStudent();
+        }
+        else if (event.getSource() == btn_dbWrite)
+        {
+            if(dbWrite.writeProject(wrapper.getProjectMap()) && dbWrite.writeStudent(wrapper.getStudentMap()))
+            {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Success !!!");
+                alert.setHeaderText("Data Successfully written to Project and Student table");
+                alert.showAndWait();
+            }
+        }
     }
 
     @FXML
@@ -94,7 +114,7 @@ public class DashboardController
             alert.showAndWait();
         }
     }
-    
+
     @FXML
     private void handleAddProject(ActionEvent event)
     {
@@ -117,30 +137,25 @@ public class DashboardController
             alert.showAndWait();
         }
     }
-    
+
     @FXML
     private void handleReadStudent(ActionEvent event)
     {
         wrapper.readAll();
-        //wrapper.readStudent();
+        // wrapper.readStudent();
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.initOwner(mainApp.getPrimaryStage());
         alert.setTitle("Data Loaded");
         alert.setHeaderText("Students prefernce and project data loaded");
         alert.showAndWait();
     }
-    
+
     @FXML
-    private void handleAddTeam(ActionEvent event)
+    private void handleAddTeam()
     {
-        Team tempTeam = new Team();
         if (!(wrapper.getProjectList().isEmpty() && wrapper.getStudentList().isEmpty()))
         {
-            boolean okClicked = mainApp.showAddTeam(tempTeam, wrapper.getStudentList(), wrapper.getProjectList());
-            if (okClicked)
-            {
-                //wrapper.addTeam(tempTeam);
-            }
+            mainApp.showAddTeam(wrapper.getStudentList(), wrapper.getProjectList());
         }
         else
         {
@@ -151,5 +166,17 @@ public class DashboardController
             alert.setContentText("Please use the 'Read Student' button to load projects and students");
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    private void handleDataBaseRead()
+    {
+
+    }
+
+    @FXML
+    private void handleDataBaseWrite()
+    {
+
     }
 }
