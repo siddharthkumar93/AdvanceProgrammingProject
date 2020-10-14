@@ -3,9 +3,9 @@ package assignment.application.model;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -16,22 +16,33 @@ import assignment.application.data.FileReadWrite;
 public class ModelWrapper
 {
 
-    transient Scanner input = new Scanner(System.in);
-    transient FileReadWrite data = new FileReadWrite();
+    Scanner input = new Scanner(System.in);
+    FileReadWrite data = new FileReadWrite();
 
     private TreeMap<String, Company> company;
     private TreeMap<String, Project> project;
     private TreeMap<String, ProjectOwner> projectOwner;
     private TreeMap<String, Student> student;
     private TreeMap<String, Team> team;
+    
+    private static ModelWrapper instance = null;
 
-    public ModelWrapper()
+    private ModelWrapper()
     {
         student = new TreeMap<String, Student>();
         company = new TreeMap<String, Company>();
         project = new TreeMap<String, Project>();
         projectOwner = new TreeMap<String, ProjectOwner>();
         team = new TreeMap<String, Team>();
+    }
+    
+    public static ModelWrapper getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new ModelWrapper();
+        }
+        return instance;
     }
 
     public void addCompany(Company objCompany)
@@ -59,30 +70,30 @@ public class ModelWrapper
         team.get(objTeam.getTeamID()).setPreferncePercentage(student);
         team.get(objTeam.getTeamID()).setTotalSkillGap(project.get(objTeam.getTeamID()));
     }
-    
+
     public TreeMap<String, Team> getTeam()
     {
         return team;
     }
 
-    public Set<String> getCompanyList()
+    public TreeMap<String, Company> getCompany()
     {
-        return company.keySet();
+        return company;
     }
 
-    public Set<String> getProjectOwnerList()
+    public TreeMap<String, ProjectOwner> getProjectOwner()
     {
-        return projectOwner.keySet();
+        return projectOwner;
     }
 
-    public Set<String> getProjectList()
+    public TreeMap<String, Project> getProject()
     {
-        return project.keySet();
+        return project;
     }
 
-    public Set<String> getStudentList()
+    public TreeMap<String, Student> getStudent()
     {
-        return student.keySet();
+        return student;
     }
 
     public void readAll()
@@ -142,7 +153,7 @@ public class ModelWrapper
             student.get(id).setPreferenceString(content[i][1].strip());
         }
     }
-    
+
     public boolean confictCheck(ArrayList<String> tempMember, String studentID)
     {
         boolean confictFlag = false;
@@ -170,22 +181,22 @@ public class ModelWrapper
         }
         return confictFlag;
     }
-    
+
     public boolean teamPersonalityCheck(ArrayList<String> teamMembers)
     {
         boolean flag = false;
-        
-        for(String studentID: teamMembers)
+
+        for (String studentID : teamMembers)
         {
-            if(student.get(studentID).getPersonality() == 'A')
+            if (student.get(studentID).getPersonality() == 'A')
             {
                 flag = true;
             }
-        }    
+        }
         return flag;
     }
 
-    //need update
+    // need update
     public void capturePersonalities(boolean readStudent)
     {
         boolean flag = true;
@@ -201,8 +212,7 @@ public class ModelWrapper
                 studentID = input.nextLine().trim().toUpperCase();
                 temp = " ";
 
-                 student.get(studentID).setPersonality(personality);
-                    
+                student.get(studentID).setPersonality(personality);
 
                 System.out.println("Enter the conflict students id (upto 2 eg. S10 s20)");
                 temp = input.nextLine();
@@ -269,7 +279,6 @@ public class ModelWrapper
                     {
                         tempMap.put(key, tempMap.get(key) + entry2.getValue());
                     }
-
                     key = "";
                 }
             }
@@ -280,15 +289,128 @@ public class ModelWrapper
         System.out.println(sortedset);
     }
 
+    public ArrayList<Double> getTeamMetricSD()
+    {
+        ArrayList<Double> teamMetricSD = new ArrayList<Double>();
+        float prefPercentageAvg = 0f;
+        float skillCompentancyAvg = 0f;
+        float skillGapAvg = 0f;
+
+        float totalPrefPercentage = 0f;
+        float totalSkillCompentancy = 0f;
+        float totalSkillGap = 0f;
+
+        double prefPercentageSD = 0d;
+        double skillCompentancySD = 0d;
+        double skillGapSD = 0d;
+
+        for (Team teamEntry : team.values())
+        {
+            prefPercentageAvg += (teamEntry.getPreferncePercentage() / team.size());
+            skillCompentancyAvg += (teamEntry.getAverageStudentSkill() / team.size());
+            skillGapAvg += (teamEntry.getTotalSkillGap() / team.size());
+        }
+
+        for (Team teamEntry : team.values())
+        {
+            totalPrefPercentage += Math.pow((teamEntry.getPreferncePercentage() - prefPercentageAvg), 2);
+            totalSkillCompentancy += Math.pow((teamEntry.getAverageStudentSkill() - skillCompentancyAvg), 2);
+            totalSkillGap += Math.pow((teamEntry.getTotalSkillGap() - skillGapAvg), 2);
+        }
+
+        prefPercentageSD = Math.sqrt(totalPrefPercentage / team.size());
+        skillCompentancySD = Math.sqrt(totalSkillCompentancy / team.size());
+        skillGapSD = Math.sqrt(totalSkillGap / team.size());
+        
+        teamMetricSD.add(prefPercentageSD);
+        teamMetricSD.add(skillCompentancySD);
+        teamMetricSD.add(skillGapSD);
+        
+        return teamMetricSD;
+    }
+
     public Map<String, Project> getProjectMap()
     {
         return project;
     }
-    
+
     public Map<String, Student> getStudentMap()
     {
         return student;
     }
 
-  
+    // Method to generate heuristic suggestions
+    public ArrayList<String> getSwapSuggestions()
+    {
+        ArrayList<String> swapMembers = new ArrayList<String>();
+        List<Team> teamSet = new ArrayList<Team>(team.values());
+
+        int startIndex = 0;
+        int endIndex = teamSet.size() - 1;
+
+        // sorting the team based on
+        teamSet.sort((Team t1, Team t2) -> Float.compare(t1.getTotalSkillGap(), t2.getTotalSkillGap()));
+
+        while (swapMembers.size() == 0)
+        {
+            swapMembers = findSwapMembers(teamSet.get(startIndex).getTeamID(), teamSet.get(endIndex).getTeamID());
+            startIndex++;
+            endIndex--;
+            if (startIndex == endIndex || startIndex > endIndex)
+            {
+                break;
+            }
+        }
+
+        if (swapMembers.size() == 0)
+        {
+            swapMembers.add("No suggestions found");
+        }
+
+        return swapMembers;
+    }
+
+    private ArrayList<String> findSwapMembers(String team1, String team2)
+    {
+        float team1CurrentSkillGap = team.get(team1).getTotalSkillGap();
+        float team2CurrentSkillGap = team.get(team2).getTotalSkillGap();
+
+        ArrayList<String> team1Members = team.get(team1).getTeamMembers();
+        ArrayList<String> team2Members = team.get(team2).getTeamMembers();
+        ArrayList<String> swapMemberSuggestions = new ArrayList<String>();
+
+        String temp;
+
+        for (int i = 0; i < team1Members.size(); i++)
+        {
+            for (int j = 0; j < team2Members.size(); j++)
+            {
+                temp = team1Members.get(i);
+                team1Members.set(i, team2Members.get(j));
+                team2Members.set(j, temp);
+
+                if (getNewSkillGap(team1Members, team1) < team1CurrentSkillGap
+                            && getNewSkillGap(team2Members, team2) < team2CurrentSkillGap)
+                {
+                    swapMemberSuggestions.add(team1Members.get(i) + " <-> " + team2Members.get(j));
+                    team1CurrentSkillGap = getNewSkillGap(team1Members, team1);
+                    team2CurrentSkillGap = getNewSkillGap(team2Members, team2);
+                }
+
+                team2Members.set(j, team1Members.get(i));
+                team1Members.set(i, temp);
+            }
+        }
+        return swapMemberSuggestions;
+    }
+
+    private float getNewSkillGap(ArrayList<String> tempTeamMember, String teamID)
+    {
+        Team tempTeam = new Team("tempID", "tempName", tempTeamMember);
+        tempTeam.setAvgStudentSkillMap(student);
+        tempTeam.setPreferncePercentage(student);
+        tempTeam.setTotalSkillGap(project.get(teamID));
+
+        return tempTeam.getTotalSkillGap();
+    }
 }

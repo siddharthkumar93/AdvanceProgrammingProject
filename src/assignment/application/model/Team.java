@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * @author Siddharth Kumar
+ *
+ */
 public class Team
 {
     private String teamID;
@@ -89,11 +93,11 @@ public class Team
                 key = entry.getKey();
                 if (this.avgStudentSkillMap.containsKey(key))
                 {
-                    this.avgStudentSkillMap.put(key, this.avgStudentSkillMap.get(key) + (entry.getValue() / teamSize));
+                    this.avgStudentSkillMap.put(key, this.avgStudentSkillMap.get(key) + ((float) entry.getValue() / teamSize));
                 }
                 else
                 {
-                    this.avgStudentSkillMap.put(key, (float) (entry.getValue() / teamSize));
+                    this.avgStudentSkillMap.put(key, ((float) entry.getValue() / teamSize));
                 }
 
                 total += entry.getValue() / teamSize;
@@ -135,15 +139,16 @@ public class Team
         Map<String, Integer> tempRank = project.getRanking();
         for (Entry<String, Integer> rank : tempRank.entrySet())
         {
+            // adding the negative skills as well for better skill map assessment
             if (rank.getValue() - this.avgStudentSkillMap.get(rank.getKey()) > 0)
             {
-                tempSkillGap += rank.getValue() - this.avgStudentSkillMap.get(rank.getKey());
+                tempSkillGap += Math.abs(rank.getValue() - this.avgStudentSkillMap.get(rank.getKey()));
             }
         }
 
         this.totalSkillGap = tempSkillGap;
     }
-    
+
     public float getTotalSkillGap()
     {
         return this.totalSkillGap;

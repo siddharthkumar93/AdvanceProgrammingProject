@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Set;
 
 import assignment.application.model.Company;
-import assignment.application.model.ModelWrapper;
 import assignment.application.model.Project;
 import assignment.application.model.ProjectOwner;
 import assignment.application.ui.CompanyController;
@@ -22,8 +21,10 @@ import javafx.stage.Stage;
 public class Main extends Application
 {
     private Stage primaryStage;
-    private ModelWrapper wrapper = new ModelWrapper();
 
+    /**
+     * Primary Application Window 
+     */
     @Override
     public void start(Stage primaryStage)
     {
@@ -41,13 +42,12 @@ public class Main extends Application
 
             DashboardController controller = loader.getController();
             controller.setMainApp(this);
-            controller.setWrapper(wrapper);
 
             primaryStage.show();
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            e.printStackTrace();
+            exception.printStackTrace();
         }
     }
 
@@ -183,7 +183,7 @@ public class Main extends Application
             dialogStage.setTitle("Create/Edit Team");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
-            //dialogStage.setResizable(false);
+            dialogStage.setResizable(false);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
 
@@ -192,7 +192,6 @@ public class Main extends Application
             controller.setDialogStage(dialogStage);
             controller.setProjectList(projectList);
             controller.setStudentList(studentList);
-            controller.setWrapper(wrapper);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

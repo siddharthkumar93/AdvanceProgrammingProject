@@ -4,6 +4,8 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import assignment.application.model.Project;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -14,6 +16,10 @@ import javafx.stage.Stage;
 
 public class ProjectController
 {
+    private Stage projectStage;
+    private Project project;
+    private ObservableList<Integer> value = FXCollections.observableArrayList(1,2,3,4);
+    
     @FXML
     private Button btn_ok, btn_cancel;
 
@@ -27,19 +33,16 @@ public class ProjectController
     private ComboBox<String> cmb_projectOwnerID = new ComboBox<String>();
     
     @FXML
-    private ChoiceBox<Integer> chb_a = new ChoiceBox<Integer>();
+    private ChoiceBox<Integer> chb_a = new ChoiceBox<Integer>(value);
     
     @FXML
-    private ChoiceBox<Integer> chb_n = new ChoiceBox<Integer>();
+    private ChoiceBox<Integer> chb_n = new ChoiceBox<Integer>(value);
     
     @FXML
-    private ChoiceBox<Integer> chb_p = new ChoiceBox<Integer>();
+    private ChoiceBox<Integer> chb_p = new ChoiceBox<Integer>(value);
     
     @FXML
-    private ChoiceBox<Integer> chb_w = new ChoiceBox<Integer>();
-
-    private Stage projectStage;
-    private Project project;
+    private ChoiceBox<Integer> chb_w = new ChoiceBox<Integer>(value);
 
     private boolean okClicked = false;
 

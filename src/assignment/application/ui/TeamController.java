@@ -1,10 +1,15 @@
 package assignment.application.ui;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Stack;
 
+import assignment.application.command.ApplicationCommand;
+import assignment.application.command.UndoAdd;
+import assignment.application.command.UndoSwap;
 import assignment.application.model.ModelWrapper;
 import assignment.application.model.Team;
 import javafx.event.ActionEvent;
@@ -26,6 +31,7 @@ import javafx.stage.Stage;
 
 public class TeamController
 {
+    // team window control declarations
     @FXML
     ComboBox<String> cmb_team1 = new ComboBox<String>();
 
@@ -45,7 +51,7 @@ public class TeamController
     ComboBox<String> cmb_student = new ComboBox<String>();
 
     @FXML
-    Button btn_add, btn_swap, btn_close, btn_update;
+    Button btn_add, btn_swap, btn_close, btn_update, btn_undo;
 
     @FXML
     AnchorPane apn_team;
@@ -66,74 +72,53 @@ public class TeamController
     Label lbl_team5Student1, lbl_team5Student2, lbl_team5Student3, lbl_team5Student4;
 
     @FXML
+    Label lbl_preferenceSD, lbl_compentancySD, lbl_skillGapSD;
+
+    @FXML
+    Label lbl_suggestions;
+
+    @FXML
     BarChart graph_prefernce, graph_compentancy, graph_skillGap;
 
+    // Controller private variables
     private Stage teamStage;
-    private ModelWrapper wrapper;
+    private ModelWrapper wrapper = ModelWrapper.getInstance();
 
     private ArrayList<String> selectedCheckBoxes = new ArrayList<String>();
-
     private ArrayList<Label> tempLabel = new ArrayList<Label>();
 
-    public void setDialogStage(Stage teamStage)
-    {
-        this.teamStage = teamStage;
-    }
+    private Stack<ApplicationCommand> undoStack = new Stack<ApplicationCommand>();
 
-    public void graph()
+    @FXML
+    private void handleUndo()
     {
-        graph_prefernce.getData().clear();
-        graph_compentancy.getData().clear();
-        graph_skillGap.getData().clear();
-       
-        XYChart.Series seriesPrefernece = new XYChart.Series();
-        XYChart.Series seriesCompentancy = new XYChart.Series();
-        XYChart.Series seriesSkillGap = new XYChart.Series();
-        for (Entry<String, Team> team : wrapper.getTeam().entrySet())
+        if (!undoStack.isEmpty())
         {
-            seriesPrefernece.getData().add(new XYChart.Data(team.getKey(), team.getValue().getPreferncePercentage()));
-            seriesCompentancy.getData().add(new XYChart.Data(team.getKey(), team.getValue().getAverageStudentSkill()));
-            seriesSkillGap.getData().add(new XYChart.Data(team.getKey(), team.getValue().getTotalSkillGap()));
-        }
-        graph_prefernce.getData().add(seriesPrefernece);
-        graph_compentancy.getData().add(seriesCompentancy);
-        graph_skillGap.getData().add(seriesSkillGap);
-    }
-
-    public void setWrapper(ModelWrapper wrapper)
-    {
-        this.wrapper = wrapper;
-    }
-
-    private ArrayList<String> getTeamMembers(String checkBox)
-    {
-        ArrayList<String> tempMembers = new ArrayList<String>();
-
-        tempLabel.clear();
-        getStudentLabelNodes(apn_team, checkBox, true);
-
-        for (Label temp : tempLabel)
-        {
-            if (!temp.getText().isEmpty())
+            ApplicationCommand tempCmd = undoStack.pop();
+            if (tempCmd instanceof UndoAdd)
             {
-                tempMembers.add(temp.getText());
+                setStudentLabel(((UndoAdd) tempCmd).getValue(), ((UndoAdd) tempCmd).getCheckBox());
+            }
+            else
+            {
+                swapLabel(((UndoSwap) tempCmd).getCheckBox(), ((UndoSwap) tempCmd).getValue(0), ((UndoSwap) tempCmd).getValue(1));
             }
         }
-
-        return tempMembers;
     }
 
+    // Update button event handler
     @FXML
     private void handleUpdate()
     {
         String teamName;
-        ArrayList<String> teamMembers = new ArrayList<String>();
+        ArrayList<String> teamMembers;
 
         ArrayList<ComboBox<String>> tempComboBoxList = new ArrayList<ComboBox<String>>(
                     Arrays.asList(cmb_team1, cmb_team2, cmb_team3, cmb_team4, cmb_team5));
 
         for (ComboBox<String> tempComboBox : tempComboBoxList)
         {
+            teamMembers = new ArrayList<String>();
             if (tempComboBox.getValue() != (null))
             {
                 for (Node component : tempComboBox.getParent().getChildrenUnmodifiable())
@@ -162,7 +147,9 @@ public class TeamController
                 }
             }
         }
-        graph();
+        updateSD();
+        updateGraph();
+        updateSuggestions();
     }
 
     // Cancel button event handler
@@ -172,6 +159,7 @@ public class TeamController
         teamStage.close();
     }
 
+    // Add button event handler
     @FXML
     private void handleAdd()
     {
@@ -233,6 +221,7 @@ public class TeamController
                     || wrapper.confictCheck(getTeamMembers(selectedCheckBoxes.get(1)), Student1))
         {
             Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(teamStage);
             alert.setTitle("A student conflict has been identified !!!");
             alert.setContentText("Do you wish to continue swapping these student?");
             ButtonType okButton = new ButtonType("Yes", ButtonBar.ButtonData.YES);
@@ -242,17 +231,28 @@ public class TeamController
                 if (type.getText().equalsIgnoreCase("YES"))
                 {
                     swapLabel(selectedCheckBoxes, Student1, Student2);
+                    undoStack.push(new UndoSwap(selectedCheckBoxes, Student2, Student1));
                 }
             });
+        }
+        else if (!swapPersonalityCheck(Student1, Student2))
+        {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.initOwner(teamStage);
+            alert.setTitle("Team personality parameter failed!!");
+            alert.setHeaderText("Atleast one type A personality required");
+            alert.setContentText("Please ensure both team has type A personality");
+            alert.showAndWait();
         }
         else
         {
             swapLabel(selectedCheckBoxes, Student1, Student2);
+            undoStack.push(new UndoSwap(selectedCheckBoxes, Student2, Student1));
         }
     }
 
     @FXML
-    public void handleSelectItem(ActionEvent event)
+    private void handleSelectItem(ActionEvent event)
     {
         if (event.getSource() instanceof CheckBox)
         {
@@ -270,11 +270,11 @@ public class TeamController
     }
 
     @FXML
-    public void handleStudentComboBox(ActionEvent event)
+    private void handleStudentComboBox(ActionEvent event)
     {
         if (event.getSource() instanceof ComboBox)
         {
-            ComboBox<String> tempCombox = (ComboBox) event.getSource();
+            ComboBox<String> tempCombox = (ComboBox<String>) event.getSource();
             if (tempCombox.getValue() != null)
             {
                 btn_add.setDisable(false);
@@ -287,18 +287,23 @@ public class TeamController
         }
     }
 
-    public void setProjectList(Set<String> projectList)
+    // private controller methods
+    private boolean swapPersonalityCheck(String s1, String s2)
     {
-        cmb_team1.getItems().addAll(projectList);
-        cmb_team2.getItems().addAll(projectList);
-        cmb_team3.getItems().addAll(projectList);
-        cmb_team4.getItems().addAll(projectList);
-        cmb_team5.getItems().addAll(projectList);
-    }
+        boolean flag = false;
+        ArrayList<String> tempTeam1, tempTeam2;
 
-    public void setStudentList(Set<String> studentList)
-    {
-        cmb_student.getItems().addAll(studentList);
+        tempTeam1 = getTeamMembers(selectedCheckBoxes.get(0));
+        tempTeam2 = getTeamMembers(selectedCheckBoxes.get(1));
+
+        tempTeam1.remove(s1);
+        tempTeam2.remove(s2);
+        tempTeam1.add(s2);
+        tempTeam2.add(s1);
+
+        flag = (wrapper.teamPersonalityCheck(tempTeam1) && wrapper.teamPersonalityCheck(tempTeam2));
+
+        return flag;
     }
 
     private void updateLabel(String checkBox)
@@ -318,9 +323,13 @@ public class TeamController
                 if (type.getText().equalsIgnoreCase("YES"))
                 {
                     cmb_student.getItems().add(getStudentLabel(checkBox));
+                    
+                    undoStack.push(new UndoAdd(getStudentLabel(checkBox), checkBox));
                     setStudentLabel(cmb_student.getValue(), checkBox);
+                   
                     cmb_student.getItems().remove(cmb_student.getValue());
                     cmb_student.setValue(null);
+
                 }
             });
         }
@@ -329,15 +338,14 @@ public class TeamController
             setStudentLabel(cmb_student.getValue(), checkBox);
             cmb_student.getItems().remove(cmb_student.getValue());
             cmb_student.setValue(null);
+            undoStack.push(new UndoAdd("", checkBox));
         }
-
     }
 
     private void swapLabel(ArrayList<String> checkBox, String Student1, String Student2)
     {
         setStudentLabel(Student2, checkBox.get(0));
         setStudentLabel(Student1, checkBox.get(1));
-
     }
 
     private void setStudentLabel(String value, String checkBox)
@@ -352,6 +360,66 @@ public class TeamController
         tempLabel.clear();
         getStudentLabelNodes(apn_team, checkBox, false);
         return tempLabel.get(0).getText();
+    }
+
+    private ArrayList<String> getTeamMembers(String checkBox)
+    {
+        ArrayList<String> tempMembers = new ArrayList<String>();
+
+        tempLabel.clear();
+        getStudentLabelNodes(apn_team, checkBox, true);
+
+        for (Label temp : tempLabel)
+        {
+            if (!temp.getText().isEmpty())
+            {
+                tempMembers.add(temp.getText());
+            }
+        }
+
+        return tempMembers;
+    }
+
+    private void updateSD()
+    {
+        ArrayList<Double> teamMetricSD = wrapper.getTeamMetricSD();
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        lbl_preferenceSD.setText("SD : " + decimalFormat.format(teamMetricSD.get(0)));
+        lbl_compentancySD.setText("SD : " + decimalFormat.format(teamMetricSD.get(1)));
+        lbl_skillGapSD.setText("SD : " + decimalFormat.format(teamMetricSD.get(2)));
+    }
+
+    private void updateGraph()
+    {
+        graph_prefernce.getData().clear();
+        graph_compentancy.getData().clear();
+        graph_skillGap.getData().clear();
+
+        XYChart.Series seriesPrefernece = new XYChart.Series();
+        XYChart.Series seriesCompentancy = new XYChart.Series();
+        XYChart.Series seriesSkillGap = new XYChart.Series();
+        for (Entry<String, Team> team : wrapper.getTeam().entrySet())
+        {
+            seriesPrefernece.getData().add(new XYChart.Data(team.getKey(), team.getValue().getPreferncePercentage()));
+            seriesCompentancy.getData().add(new XYChart.Data(team.getKey(), team.getValue().getAverageStudentSkill()));
+            seriesSkillGap.getData().add(new XYChart.Data(team.getKey(), team.getValue().getTotalSkillGap()));
+        }
+        graph_prefernce.getData().add(seriesPrefernece);
+        graph_compentancy.getData().add(seriesCompentancy);
+        graph_skillGap.getData().add(seriesSkillGap);
+    }
+
+    private void updateSuggestions()
+    {
+        String swapLabel = "";
+
+        lbl_suggestions.setText("");
+        for (String swap : wrapper.getSwapSuggestions())
+        {
+            swapLabel += swap;
+        }
+
+        lbl_suggestions.setText(swapLabel);
     }
 
     // Reference :
@@ -379,5 +447,25 @@ public class TeamController
 
             }
         }
+    }
+
+    // controller public methods
+    public void setDialogStage(Stage teamStage)
+    {
+        this.teamStage = teamStage;
+    }
+
+    public void setProjectList(Set<String> projectList)
+    {
+        cmb_team1.getItems().addAll(projectList);
+        cmb_team2.getItems().addAll(projectList);
+        cmb_team3.getItems().addAll(projectList);
+        cmb_team4.getItems().addAll(projectList);
+        cmb_team5.getItems().addAll(projectList);
+    }
+
+    public void setStudentList(Set<String> studentList)
+    {
+        cmb_student.getItems().addAll(studentList);
     }
 }
