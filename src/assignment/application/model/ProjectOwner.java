@@ -10,11 +10,7 @@ public class ProjectOwner
     private String emailID;
     private String companyID;
 
-    public ProjectOwner()
-    {
-
-    }
-
+    // Class constructor
     public ProjectOwner(String firstName, String lastName, String ownerID, String role, String emailID, String companyID)
     {
         this.firstName = firstName;

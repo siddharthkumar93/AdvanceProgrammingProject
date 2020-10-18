@@ -41,8 +41,8 @@ public class PreferenceController
 
         prefence1 = cmb_pref1.getValue() != null ? cmb_pref1.getValue() : GlobalVar.emptyString;
         prefence2 = cmb_pref2.getValue() != null ? cmb_pref2.getValue() : GlobalVar.emptyString;
-        prefence3 = cmb_pref3.getValue() != null ? cmb_pref2.getValue() : GlobalVar.emptyString;
-        prefence4 = cmb_pref4.getValue() != null ? cmb_pref2.getValue() : GlobalVar.emptyString;
+        prefence3 = cmb_pref3.getValue() != null ? cmb_pref3.getValue() : GlobalVar.emptyString;
+        prefence4 = cmb_pref4.getValue() != null ? cmb_pref4.getValue() : GlobalVar.emptyString;
 
         if (validateInput())
         {
@@ -68,7 +68,7 @@ public class PreferenceController
         if (prefence1.equals(GlobalVar.emptyString) && prefence2.equals(GlobalVar.emptyString) && prefence3.equals(GlobalVar.emptyString)
                     && prefence4.equals(GlobalVar.emptyString))
         {
-            GlobalVar.requiredFeildError(preferenceStage);
+            GlobalVar.requiredFieldError(preferenceStage);
             return false;
         }
         return true;

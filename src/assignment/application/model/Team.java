@@ -8,10 +8,6 @@ import java.util.StringTokenizer;
 
 import assignment.application.GlobalVar;
 
-/**
- * @author Siddharth Kumar
- *
- */
 public class Team
 {
     private String teamID;
@@ -38,11 +34,12 @@ public class Team
         avgStudentSkill = 0f;
         preferncePercentage = 0f;
     }
-    
-    public Team(String teamID, String teamName, String teamMembers)
+
+    public Team(String teamID, String teamName, String teamMembers) throws MemberExistsException
     {
         this.teamID = teamID;
         this.teamName = teamName;
+        this.teamMembers = new ArrayList<String>();
         this.setTeamMembers(teamMembers);
         avgStudentSkillMap = new HashMap<String, Float>();
         avgStudentSkill = 0f;
@@ -62,25 +59,34 @@ public class Team
     public String getTeamMembersString()
     {
         String teamMembers = GlobalVar.emptyString;
-        for(String member : this.teamMembers)
+        for (String member : this.teamMembers)
         {
             teamMembers.concat(member).concat(" ");
         }
-        
+
         return teamMembers;
     }
-    
+
     public void setTeamMembers(ArrayList<String> teamMembers)
     {
         this.teamMembers = teamMembers;
     }
-    
-    public void setTeamMembers(String temaMembers)
+
+    public void setTeamMembers(String temaMembers) throws MemberExistsException
     {
         StringTokenizer st = new StringTokenizer(temaMembers, " ");
+        
         while (st.hasMoreTokens())
         {
-            this.teamMembers.add(st.nextToken());
+            String studentId = st.nextToken();
+            if (!this.teamMembers.contains(studentId))
+            {
+                this.teamMembers.add(studentId);
+            }
+            else
+            {
+                throw new MemberExistsException(st.nextToken() + " member exisits in the team");
+            }
         }
     }
 

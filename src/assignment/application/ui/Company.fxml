@@ -25,7 +25,7 @@
           <RowConstraints minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Company ID" GridPane.valignment="TOP">
+            <Label text="*Company ID" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -33,7 +33,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label text="Company Name" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <Label text="*Company Name" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -41,7 +41,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label text="ABN Number" GridPane.rowIndex="2" GridPane.valignment="TOP">
+            <Label text="*ABN Number" GridPane.rowIndex="2" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -49,7 +49,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="99.0" text="Company URL" GridPane.rowIndex="3" GridPane.valignment="TOP">
+            <Label prefHeight="20.0" prefWidth="99.0" text="*Company URL" GridPane.rowIndex="3" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -57,7 +57,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="120.0" text="Company Address" GridPane.rowIndex="4" GridPane.valignment="TOP">
+            <Label prefHeight="20.0" prefWidth="120.0" text="*Company Address" GridPane.rowIndex="4" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>

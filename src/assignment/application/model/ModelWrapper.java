@@ -11,14 +11,16 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import assignment.application.GlobalVar;
 import assignment.application.data.FileReadWrite;
 
 public class ModelWrapper
 {
-
+    // Scanner and file read object declearatrion
     Scanner input = new Scanner(System.in);
     FileReadWrite data = new FileReadWrite();
 
+    // class private treemap
     private TreeMap<String, Company> company;
     private TreeMap<String, Project> project;
     private TreeMap<String, ProjectOwner> projectOwner;
@@ -38,7 +40,7 @@ public class ModelWrapper
     }
 
     // Singleton pattern implementation
-    // Method to pass instance of this class 
+    // Method to pass instance of this class
     public static ModelWrapper getInstance()
     {
         if (instance == null)
@@ -48,29 +50,43 @@ public class ModelWrapper
         return instance;
     }
 
-    public void addCompany(Company objCompany)
+    // Method to add companies to company map
+    public void addCompany(Company objCompany, boolean write)
     {
         company.put(objCompany.getCompanyID(), objCompany);
-        data.writeCompany(company);
+        if (write)
+        {
+            data.writeCompany(company);
+        }
     }
 
-    public void addProjectOwner(ProjectOwner owner)
+    // Method to add project owners to projectOwner map
+    public void addProjectOwner(ProjectOwner owner, boolean write)
     {
         projectOwner.put(owner.getOwnerID(), owner);
-        data.writeOwners(projectOwner);
+        if (write)
+        {
+            data.writeOwners(projectOwner);
+        }
     }
 
-    public void addProject(Project objProject)
+    // Method to add projects to project map and trigger project.txt generation
+    public void addProject(Project objProject, boolean write)
     {
         project.put(objProject.getProjectID(), objProject);
-        data.writeProject(project);
+        if (write)
+        {
+            data.writeProject(project);
+        }
     }
 
+    // Method to add Students to student map
     public void addStudent(Student objStudent)
     {
         student.put(objStudent.getStudentID(), objStudent);
     }
-    
+
+    // Method to add teams to teamMap and calculate team metrics
     public void addTeam(Team objTeam)
     {
         team.put(objTeam.getTeamID(), objTeam);
@@ -79,6 +95,7 @@ public class ModelWrapper
         team.get(objTeam.getTeamID()).setTotalSkillGap(project.get(objTeam.getTeamID()));
     }
 
+    // Getter for class treeMaps
     public TreeMap<String, Team> getTeam()
     {
         return team;
@@ -104,16 +121,26 @@ public class ModelWrapper
         return student;
     }
 
-    public void readAll()
+    // Function to load student and project details form file
+    public void readAll(boolean testMode)
     {
-        readStudentInfo();
-        readProject();
-        readStudentPreference();
+        readStudentInfo(testMode);
+        readProject(testMode);
+        readStudentPreference(testMode);
     }
 
-    public void readProject()
+    // Function to load project information form file to Project Map
+    public void readProject(boolean testMode)
     {
-        String[][] content = data.readFile("projects.txt");
+        String[][] content;
+        if (testMode)
+        {
+            content = data.readFile("testProjects.txt");
+        }
+        else
+        {
+            content = data.readFile("projects.txt");
+        }
 
         for (int i = 0; i < content.length; i++)
         {
@@ -121,27 +148,36 @@ public class ModelWrapper
         }
     }
 
+    // Function to load Student basic information form file to Student Map
     public void readStudent()
     {
-        System.out.println("The following students are availbe with their repective grades");
         String id;
         String[][] content = data.readFile("students.txt");
 
         for (int i = 0; i < content.length; i++)
         {
             id = content[i][0].trim().toUpperCase();
-            student.put(id, new Student(id, content[i][1], ' ', ""));
-            System.out.println(content[i][0]);
-            System.out.println(content[i][1]);
+            student.put(id, new Student(id, content[i][1], ' ', GlobalVar.emptyString));
         }
 
     }
 
-    public void readStudentInfo()
+    // Function to load Student basic information and conflicts form file to Student
+    // Map
+    public void readStudentInfo(boolean testMode)
     {
         char personality;
         String id;
-        String[][] content = data.readFile("studentinfo.txt");
+        String[][] content;
+
+        if (testMode)
+        {
+            content = data.readFile("testStudentinfo.txt");
+        }
+        else
+        {
+            content = data.readFile("studentinfo.txt");
+        }
 
         for (int i = 0; i < content.length; i++)
         {
@@ -151,10 +187,21 @@ public class ModelWrapper
         }
     }
 
-    public void readStudentPreference()
+    // Function to read student preferred team
+    public void readStudentPreference(boolean testMode)
     {
         String id;
-        String[][] content = data.readFile("preferences.txt");
+        String[][] content;
+
+        if (testMode)
+        {
+            content = data.readFile("testPreferences.txt");
+        }
+        else
+        {
+            content = data.readFile("preferences.txt");
+        }
+
         for (int i = 0; i < content.length; i++)
         {
             id = content[i][0].trim().toUpperCase();
@@ -162,6 +209,7 @@ public class ModelWrapper
         }
     }
 
+    // Method to check for conflicts between team members
     public boolean confictCheck(ArrayList<String> tempMember, String studentID)
     {
         boolean confictFlag = false;
@@ -190,6 +238,7 @@ public class ModelWrapper
         return confictFlag;
     }
 
+    // Method to check that at-least on of the team member has personality A
     public boolean teamPersonalityCheck(ArrayList<String> teamMembers)
     {
         boolean flag = false;
@@ -204,6 +253,7 @@ public class ModelWrapper
         return flag;
     }
 
+    // Function to update students preferences
     public void updateStudentDetails(Student studentObj, boolean preferenceFlag)
     {
         student.put(studentObj.getStudentID(), studentObj);
@@ -218,6 +268,9 @@ public class ModelWrapper
         }
     }
 
+    // Method to short list projects based on their popularity
+    // Reference :
+    // https://stackoverflow.com/questions/29567575/sort-map-by-value-using-lambdas-and-streams
     public void shortlistProjects()
     {
         SortedMap<String, Integer> tempMap = new TreeMap<String, Integer>();
@@ -256,10 +309,10 @@ public class ModelWrapper
         }
 
         sortedset.addAll(tempMap.entrySet());
-
         System.out.println(sortedset);
     }
 
+    // Function to calculate team metrics standard deviation
     public ArrayList<Double> getTeamMetricSD()
     {
         ArrayList<Double> teamMetricSD = new ArrayList<Double>();
@@ -309,11 +362,13 @@ public class ModelWrapper
         int startIndex = 0;
         int endIndex = teamSet.size() - 1;
 
-        // sorting the team based on
+        // Sorting the team based on skill gap
         teamSet.sort((Team t1, Team t2) -> Float.compare(t1.getTotalSkillGap(), t2.getTotalSkillGap()));
 
         while (swapMembers.size() == 0)
         {
+            // Starting the swap member check at from the best and worst team and move till
+            // the middle
             swapMembers = findSwapMembers(teamSet.get(startIndex).getTeamID(), teamSet.get(endIndex).getTeamID());
             startIndex++;
             endIndex--;
@@ -331,6 +386,7 @@ public class ModelWrapper
         return swapMembers;
     }
 
+    // Method to find swappable members between two teams
     private ArrayList<String> findSwapMembers(String team1, String team2)
     {
         float team1CurrentSkillGap = team.get(team1).getTotalSkillGap();
@@ -365,6 +421,7 @@ public class ModelWrapper
         return swapMemberSuggestions;
     }
 
+    // Function to calculate skill gap to temporary teams
     private float getNewSkillGap(ArrayList<String> tempTeamMember, String teamID)
     {
         Team tempTeam = new Team("tempID", "tempName", tempTeamMember);

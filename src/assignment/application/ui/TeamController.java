@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 
+import assignment.application.GlobalVar;
 import assignment.application.command.ApplicationCommand;
 import assignment.application.command.UndoAdd;
 import assignment.application.command.UndoSwap;
@@ -75,10 +76,19 @@ public class TeamController
     Label lbl_preferenceSD, lbl_compentancySD, lbl_skillGapSD;
 
     @FXML
-    Label lbl_suggestions;
+    Label lbl_suggestions, lbl_personality, lbl_grades;
 
     @FXML
-    BarChart graph_prefernce, graph_compentancy, graph_skillGap;
+    Label lbl_rating1, lbl_rating2, lbl_rating3, lbl_rating4, lbl_rating5;
+
+    @FXML
+    BarChart<?, ?> graph_prefernce;
+
+    @FXML
+    BarChart<?, ?> graph_compentancy;
+
+    @FXML
+    BarChart<?, ?> graph_skillGap;
 
     // Controller private variables
     private Stage teamStage;
@@ -97,7 +107,12 @@ public class TeamController
             ApplicationCommand tempCmd = undoStack.pop();
             if (tempCmd instanceof UndoAdd)
             {
+                if (!((UndoAdd) tempCmd).getValue().strip().equals(GlobalVar.emptyString))
+                {
+                    cmb_student.getItems().add(getStudentLabel(((UndoAdd) tempCmd).getCheckBox()));
+                }
                 setStudentLabel(((UndoAdd) tempCmd).getValue(), ((UndoAdd) tempCmd).getCheckBox());
+
             }
             else
             {
@@ -128,7 +143,7 @@ public class TeamController
                         teamMembers.add(((Label) component).getText());
                     }
                 }
-                if (teamMembers.size() > 0)
+                if (teamMembers.size() == 4)
                 {
                     teamName = tempComboBox.getId().substring(4);
                     if (wrapper.teamPersonalityCheck(teamMembers))
@@ -144,6 +159,15 @@ public class TeamController
                         alert.setContentText("Please add team members to " + teamName + " with type A personality");
                         alert.showAndWait();
                     }
+                }
+                else
+                {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.initOwner(teamStage);
+                    alert.setTitle("Team member count failed!!");
+                    alert.setHeaderText("A team shall consists of four team members");
+                    alert.setContentText("Please add more team members");
+                    alert.showAndWait();
                 }
             }
         }
@@ -252,6 +276,19 @@ public class TeamController
     }
 
     @FXML
+    private void handleRemove()
+    {
+        for (String checkBox : selectedCheckBoxes)
+        {
+            undoStack.push(new UndoAdd(getStudentLabel(checkBox), checkBox));
+            cmb_student.getItems().add(getStudentLabel(checkBox));
+            setStudentLabel(" ", checkBox);
+        }
+        lbl_grades.setText(GlobalVar.emptyString);
+        lbl_personality.setText(GlobalVar.emptyString);
+    }
+
+    @FXML
     private void handleSelectItem(ActionEvent event)
     {
         if (event.getSource() instanceof CheckBox)
@@ -278,12 +315,51 @@ public class TeamController
             if (tempCombox.getValue() != null)
             {
                 btn_add.setDisable(false);
+
+                char personality = wrapper.getStudent().get(tempCombox.getValue()).getPersonality();
+                String grades = wrapper.getStudent().get(tempCombox.getValue()).getGradesString();
+                lbl_personality.setText(String.valueOf(personality));
+                lbl_grades.setText(grades);
             }
             else
             {
                 btn_add.setDisable(true);
             }
 
+        }
+    }
+
+    @FXML
+    private void handleProjectComboBox(ActionEvent event)
+    {
+
+        if (event.getSource() instanceof ComboBox)
+        {
+            ComboBox<String> tempCombox = (ComboBox<String>) event.getSource();
+            if (tempCombox.getValue() != null)
+            {
+                String ranking = wrapper.getProject().get(tempCombox.getValue()).getRankingString();
+                if (tempCombox.getId().equals("cmb_team1"))
+                {
+                    lbl_rating1.setText(ranking);
+                }
+                else if (tempCombox.getId().equals("cmb_team2"))
+                {
+                    lbl_rating2.setText(ranking);
+                }
+                else if (tempCombox.getId().equals("cmb_team3"))
+                {
+                    lbl_rating3.setText(ranking);
+                }
+                else if (tempCombox.getId().equals("cmb_team4"))
+                {
+                    lbl_rating4.setText(ranking);
+                }
+                else if (tempCombox.getId().equals("cmb_team5"))
+                {
+                    lbl_rating5.setText(ranking);
+                }
+            }
         }
     }
 
@@ -323,10 +399,10 @@ public class TeamController
                 if (type.getText().equalsIgnoreCase("YES"))
                 {
                     cmb_student.getItems().add(getStudentLabel(checkBox));
-                    
+
                     undoStack.push(new UndoAdd(getStudentLabel(checkBox), checkBox));
                     setStudentLabel(cmb_student.getValue(), checkBox);
-                   
+
                     cmb_student.getItems().remove(cmb_student.getValue());
                     cmb_student.setValue(null);
 
@@ -449,14 +525,71 @@ public class TeamController
         }
     }
 
+    @FXML
+    private void initialize()
+    {
+        if (wrapper.getTeam().size() > 0)
+        {
+            ArrayList<String> tempMembers;
+            int i = 1;
+            for (Entry<String, Team> tempTeam : wrapper.getTeam().entrySet())
+            {
+                tempMembers = tempTeam.getValue().getTeamMembers();
+                if (i == 1)
+                {
+                    cmb_team1.getSelectionModel().select(tempTeam.getValue().getTeamID());
+                    lbl_team1Student1.setText(tempMembers.get(0));
+                    lbl_team1Student2.setText(tempMembers.get(1));
+                    lbl_team1Student3.setText(tempMembers.get(2));
+                    lbl_team1Student4.setText(tempMembers.get(3));
+                }
+                else if (i == 2)
+                {
+                    cmb_team2.getSelectionModel().select(tempTeam.getValue().getTeamID());
+                    lbl_team2Student1.setText(tempMembers.get(0));
+                    lbl_team2Student2.setText(tempMembers.get(1));
+                    lbl_team2Student3.setText(tempMembers.get(2));
+                    lbl_team2Student4.setText(tempMembers.get(3));
+                }
+                else if (i == 3)
+                {
+                    cmb_team3.getSelectionModel().select(tempTeam.getValue().getTeamID());
+                    lbl_team3Student1.setText(tempMembers.get(0));
+                    lbl_team3Student2.setText(tempMembers.get(1));
+                    lbl_team3Student3.setText(tempMembers.get(2));
+                    lbl_team3Student4.setText(tempMembers.get(3));
+                }
+                else if (i == 4)
+                {
+                    cmb_team4.getSelectionModel().select(tempTeam.getValue().getTeamID());
+                    lbl_team4Student1.setText(tempMembers.get(0));
+                    lbl_team4Student2.setText(tempMembers.get(1));
+                    lbl_team4Student3.setText(tempMembers.get(2));
+                    lbl_team4Student4.setText(tempMembers.get(3));
+                }
+                else if (i == 5)
+                {
+                    cmb_team5.getSelectionModel().select(tempTeam.getValue().getTeamID());
+                    lbl_team5Student1.setText(tempMembers.get(0));
+                    lbl_team5Student2.setText(tempMembers.get(1));
+                    lbl_team5Student3.setText(tempMembers.get(2));
+                    lbl_team5Student4.setText(tempMembers.get(3));
+                }
+                cmb_student.getItems().removeAll(tempMembers);
+                i++;
+            }
+        }
+    }
+
     // controller public methods
     public void setDialogStage(Stage teamStage)
     {
         this.teamStage = teamStage;
     }
 
-    public void setProjectList(Set<String> projectList)
+    public void setProjectList()
     {
+        Set<String> projectList = wrapper.getProject().keySet();
         cmb_team1.getItems().addAll(projectList);
         cmb_team2.getItems().addAll(projectList);
         cmb_team3.getItems().addAll(projectList);
@@ -464,8 +597,9 @@ public class TeamController
         cmb_team5.getItems().addAll(projectList);
     }
 
-    public void setStudentList(Set<String> studentList)
+    public void setStudentList()
     {
+        Set<String> studentList = wrapper.getStudent().keySet();
         cmb_student.getItems().addAll(studentList);
     }
 }

@@ -23,7 +23,8 @@ public class Main extends Application
     private Stage primaryStage;
 
     /**
-     * Primary Application Window
+     * @author Siddharth Kumar
+     *
      */
     @Override
     public void start(Stage primaryStage)
@@ -37,7 +38,6 @@ public class Main extends Application
             loader.setLocation(Main.class.getResource("ui/Dashboard.fxml"));
             AnchorPane root = (AnchorPane) loader.load();
             Scene scene = new Scene(root);
-            //scene.getStylesheets().add(getClass().getResource("ui/Theme.css").toExternalForm());
             primaryStage.setScene(scene);
 
             DashboardController controller = loader.getController();
@@ -56,12 +56,13 @@ public class Main extends Application
         launch(args);
     }
 
-    // Not an ideal design structure, right now a quick fix
+    // Method to access primary stage
     public Stage getPrimaryStage()
     {
         return primaryStage;
     }
 
+    // Method to show Add Company form
     public void showAddCompany()
     {
         try
@@ -93,6 +94,7 @@ public class Main extends Application
         }
     }
 
+    // Method to show Add Project Owner form
     public void showAddProjectOwner(Set<String> companyList)
     {
         try
@@ -114,7 +116,6 @@ public class Main extends Application
             // Set the person into the controller.
             ProjectOwnerController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            
             controller.setCompanyList(companyList);
 
             // Show the dialog and wait until the user closes it
@@ -127,6 +128,7 @@ public class Main extends Application
         }
     }
 
+    // Method to show Add Project form
     public void showAddProject(Set<String> ownerList)
     {
         try
@@ -159,6 +161,7 @@ public class Main extends Application
         }
     }
 
+    // Method to show Edit Student details form
     public void showStudent(Set<String> studentList, Student studentObj)
     {
         try
@@ -191,6 +194,7 @@ public class Main extends Application
         }
     }
 
+    // Method to show Add Student preference form
     public void showAddPreference(Set<String> projectList, Student studentObj)
     {
         try
@@ -222,10 +226,10 @@ public class Main extends Application
             expection.printStackTrace();
         }
     }
-    
-    public void showAddTeam(Set<String> studentList, Set<String> projectList) 
-    {
 
+    // Method to show teamFormation form
+    public void showAddTeam()
+    {
         try
         {
             // Load the fxml file and create a new stage
@@ -245,8 +249,8 @@ public class Main extends Application
             // Set the person into the controller.
             TeamController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setProjectList(projectList);
-            controller.setStudentList(studentList);
+            controller.setProjectList();
+            controller.setStudentList();
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();

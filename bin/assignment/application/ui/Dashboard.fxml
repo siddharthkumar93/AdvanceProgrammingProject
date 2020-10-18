@@ -11,14 +11,6 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="510.0" minWidth="800.0" prefHeight="510.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assignment.application.ui.DashboardController">
    <children>
-      <Button fx:id="btn_loadData" layoutY="10.0" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="40.0" prefWidth="160.0" text="Load Data" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="10.0">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font></Button>
-      <Button fx:id="btn_writeData" layoutY="10.0" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="40.0" prefWidth="160.0" text="Write Data" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font></Button>
       <VBox prefHeight="400.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Pane prefHeight="60.0" prefWidth="180.0" />
@@ -65,29 +57,16 @@
          </children></VBox>
       <AnchorPane layoutX="180.0" prefHeight="600.0" prefWidth="620.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane fx:id="pn_student" layoutY="60.0" prefHeight="420.0" prefWidth="620.0" style="-fx-background-color: #FFFFEE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
-               <children>
-                  <TableView fx:id="tbl_student" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-                    <columns>
-                      <TableColumn fx:id="col_studentID" maxWidth="120.0" minWidth="60.0" text="ID" />
-                      <TableColumn fx:id="col_studentGrade" maxWidth="220.0" minWidth="60.0" prefWidth="220.0" text="GRADE" />
-                        <TableColumn fx:id="col_studentPersonality" maxWidth="120.0" minWidth="100.0" prefWidth="100.0" text="PERSONALITY" />
-                        <TableColumn fx:id="col_studentConflict" minWidth="160.0" prefWidth="200.0" text="CONFLICT" />
-                    </columns>
-                  </TableView>
-                  <Button fx:id="btn_addStudent" layoutX="482.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleUpdateStudent" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Update Details" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="5.0">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Button>
-                  <Button fx:id="btn_readStudent" layoutX="3.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleReadStudent" prefHeight="30.0" prefWidth="120.0" text="Read Student" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Button>
-                  <Button fx:id="btn_addPreference" layoutX="354.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleAddPreference" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Preference" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="135.0">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Button>
-               </children></AnchorPane>
+            <Button fx:id="btn_loadData" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="40.0" prefWidth="160.0" text="Load Data" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="10.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btn_writeData" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="40.0" prefWidth="160.0" text="Write Data" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
             <AnchorPane fx:id="pn_team" layoutY="60.0" prefHeight="420.0" prefWidth="620.0" style="-fx-background-color: #FFFFEE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
                <children>
                   <TableView fx:id="tbl_team" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
@@ -152,6 +131,30 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
+               </children></AnchorPane>
+            <AnchorPane fx:id="pn_student" layoutY="60.0" prefHeight="420.0" prefWidth="620.0" style="-fx-background-color: #FFFFEE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+               <children>
+                  <TableView fx:id="tbl_student" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                    <columns>
+                      <TableColumn fx:id="col_studentID" maxWidth="120.0" minWidth="70.0" prefWidth="-1.0" text="ID" />
+                      <TableColumn fx:id="col_studentGrade" minWidth="140.0" prefWidth="-1.0" text="GRADE" />
+                        <TableColumn fx:id="col_studentPersonality" minWidth="100.0" prefWidth="-1.0" text="PERSONALITY" />
+                        <TableColumn fx:id="col_studentConflict" minWidth="150.0" prefWidth="-1.0" text="CONFLICT" />
+                        <TableColumn fx:id="col_studentPreference" minWidth="150.0" prefWidth="-1.0" text="PREFERENCE" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="btn_addStudent" layoutX="482.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleUpdateStudent" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Update Details" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="5.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="btn_readStudent" layoutX="3.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleReadStudent" prefHeight="30.0" prefWidth="120.0" text="Read Student" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="btn_addPreference" layoutX="354.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleAddPreference" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Preference" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="135.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
                </children></AnchorPane>
          </children>
       </AnchorPane>

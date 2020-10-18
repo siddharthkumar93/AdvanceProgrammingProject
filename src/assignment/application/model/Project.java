@@ -5,20 +5,17 @@ import java.util.Map.Entry;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-public class Project 
+public class Project
 {
 
+    // Private variables
     private String title;
     private String projectID;
     private String description;
     private String ownerID;
     private TreeMap<String, Integer> ranking;
 
-    public Project()
-    {
-
-    }
-
+    // Class constructor
     public Project(String title, String projectID, String description, String ownerID, String ranking)
     {
         this.title = title;
@@ -28,7 +25,8 @@ public class Project
         this.ranking = new TreeMap<String, Integer>();
         setRanking(ranking);
     }
-    
+
+    // Class constructor
     public Project(String title, String projectID, String description, String ownerID, TreeMap<String, Integer> ranking)
     {
         this.title = title;
@@ -79,6 +77,7 @@ public class Project
         this.ownerID = ownerID;
     }
 
+    // Method to generate project ranking string
     public String getRankingString()
     {
         String temp = "";
@@ -94,6 +93,7 @@ public class Project
         return ranking;
     }
 
+    // Method to update project ranking map from string
     public void setRanking(String ranking)
     {
         StringTokenizer st = new StringTokenizer(ranking, " ");

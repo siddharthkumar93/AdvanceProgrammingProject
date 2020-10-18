@@ -18,7 +18,6 @@ public class FileReadWrite
 {
     // private variables
     private List<String[]> readLine;
-    private String[][] content = null;
     private String[] temp = null;
     int rowSize, columnSize;
 
@@ -75,16 +74,14 @@ public class FileReadWrite
 
             myReader.close();
         }
-        catch (FileNotFoundException exp)
+        catch (FileNotFoundException exception)
         {
-            System.out.println("An error occurred while opening file. \nExiting the program");
-            System.exit(0);
+            System.out.println("An error occurred while opening file.");
         }
         return content;
     }
 
-    // Function to generate course_report.txt
-    // add append functionality
+    // Function to generate companies.txt
     public void writeCompany(Map<String, Company> company)
     {
         try
@@ -124,7 +121,7 @@ public class FileReadWrite
         }
     }
 
-    // Function to generate projects.txt
+    // Method to generate projects.txt
     public void writeProject(Map<String, Project> project)
     {
         try
@@ -143,6 +140,7 @@ public class FileReadWrite
         }
     }
 
+    // Method to generate studentinfo.txt
     public void writeStudent(Map<String, Student> student, String file)
     {
         try
@@ -163,7 +161,7 @@ public class FileReadWrite
             myWriter.close();
             System.out.println(file + " generated!");
         }
-        catch (IOException exp)
+        catch (IOException expception)
         {
             System.out.println("An error occurred while writing to file");
         }

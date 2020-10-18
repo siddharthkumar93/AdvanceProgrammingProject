@@ -1,10 +1,9 @@
 package assignment.application.ui;
 
+import assignment.application.GlobalVar;
 import assignment.application.model.Company;
 import assignment.application.model.ModelWrapper;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -37,21 +36,10 @@ public class CompanyController
             abnNumber = txt_abn.getText();
             companyURL = txt_url.getText();
             address = txt_address.getText();
-   
-            ModelWrapper.getInstance().addCompany( new Company(companyID, companyName, abnNumber, companyURL, address));
-    
+
+            ModelWrapper.getInstance().addCompany(new Company(companyID, companyName, abnNumber, companyURL, address), true);
+
             companyStage.close();
-        }
-        else
-        {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(companyStage);
-            alert.setTitle("Invalid Fields");
-            alert.setHeaderText("Please correct invalid fields");
-            alert.setContentText("Correct the fields");
-
-            alert.showAndWait();
-
         }
     }
 
@@ -62,14 +50,30 @@ public class CompanyController
         companyStage.close();
     }
 
-    // Initializes the controller class.
-    @FXML
-    private void initialize()
-    {
-    }
-
     private boolean validateInput()
     {
+
+        if (txt_id.getText().equals(GlobalVar.emptyString) || txt_name.getText().equals(GlobalVar.emptyString)
+                    || txt_abn.getText().equals(GlobalVar.emptyString) || txt_url.getText().equals(GlobalVar.emptyString)
+                    || txt_address.getText().equals(GlobalVar.emptyString))
+        {
+            GlobalVar.requiredFieldError(companyStage);
+            return false;
+        }
+        // issue with java regex hence using this method
+        else
+        {
+            try
+            {
+                Integer.parseInt(txt_id.getText());
+            }
+            catch (Exception exception)
+            {
+                GlobalVar.numberFieldError("Company ID", companyStage);
+                return false;
+            }
+        }
+
         return true;
     }
 

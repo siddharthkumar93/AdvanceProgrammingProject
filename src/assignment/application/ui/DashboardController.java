@@ -1,5 +1,6 @@
 package assignment.application.ui;
 
+import assignment.application.GlobalVar;
 import assignment.application.Main;
 import assignment.application.data.DatabaseReadWrite;
 import assignment.application.model.Company;
@@ -50,7 +51,8 @@ public class DashboardController
     private TableView<Student> tbl_student;
 
     @FXML
-    private TableColumn<Student, String> col_studentID, col_studentGrade, col_studentPersonality, col_studentConflict;
+    private TableColumn<Student, String> col_studentID, col_studentGrade, col_studentPersonality, col_studentConflict,
+                col_studentPreference;
 
     @FXML
     private TableView<Team> tbl_team;
@@ -105,27 +107,43 @@ public class DashboardController
         }
         else if (event.getSource() == btn_writeData)
         {
-           writeData();
+            writeData();
         }
     }
 
     private void loadData()
     {
-        dbWrite.readProject();
-        dbWrite.readStudent();
+        if (dbWrite.readCompany() && dbWrite.readProjectOwner() && dbWrite.readProject() && dbWrite.readStudent() && dbWrite.readTeam())
+        {
+            pn_company.toFront();
+            loadCompanyTabel();
+        }
+        else
+        {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Error Loading Data");
+            alert.setHeaderText("There was an error loading data. All the data couldn't be loaded");
+            alert.showAndWait();
+        }
     }
 
     private void writeData()
     {
-        if (dbWrite.writeProject(wrapper.getProject()) && dbWrite.writeStudent(wrapper.getStudent()))
+        if (dbWrite.databaseInitialize())
         {
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Success !!!");
-            alert.setHeaderText("Data Successfully written to Project and Student table");
-            alert.showAndWait();
+            if (dbWrite.writeCompany(wrapper.getCompany()) && dbWrite.writeProjectOwner(wrapper.getProjectOwner())
+                        && dbWrite.writeProject(wrapper.getProject()) && dbWrite.writeStudent(wrapper.getStudent())
+                        && dbWrite.writeTeam(wrapper.getTeam()))
+            {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Success !!!");
+                alert.setHeaderText("Data Successfully Written to DataBase ");
+                alert.showAndWait();
+            }
         }
     }
-    
+
     private void loadCompanyTabel()
     {
         col_companyID.setCellValueFactory(new PropertyValueFactory<Company, String>("companyID"));
@@ -163,6 +181,8 @@ public class DashboardController
         col_studentGrade.setCellValueFactory(cellData -> Bindings.createStringBinding(() -> cellData.getValue().getGradesString()));
         col_studentPersonality.setCellValueFactory(new PropertyValueFactory<Student, String>("personality"));
         col_studentConflict.setCellValueFactory(cellData -> Bindings.createStringBinding(() -> cellData.getValue().getConflictString()));
+        col_studentPreference
+                    .setCellValueFactory(cellData -> Bindings.createStringBinding(() -> cellData.getValue().getPreferenceString()));
         tbl_student.setItems(FXCollections.observableArrayList(wrapper.getStudent().values()));
     }
 
@@ -193,12 +213,7 @@ public class DashboardController
         }
         else
         {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(mainApp.getPrimaryStage());
-            alert.setTitle("Companies Missing");
-            alert.setHeaderText("Atleast one company required");
-            alert.setContentText("Please add atleast one company to add project owner");
-            alert.showAndWait();
+            GlobalVar.requiredDataMissing("Company", mainApp.getPrimaryStage());
         }
         loadOwnerTabel();
     }
@@ -208,16 +223,11 @@ public class DashboardController
     {
         if (!wrapper.getProjectOwner().isEmpty())
         {
-          mainApp.showAddProject(wrapper.getProjectOwner().keySet());  
+            mainApp.showAddProject(wrapper.getProjectOwner().keySet());
         }
         else
         {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(mainApp.getPrimaryStage());
-            alert.setTitle("Project Owners Missing");
-            alert.setHeaderText("Atleast one Owner required");
-            alert.setContentText("Please add atleast one project owner to add projects");
-            alert.showAndWait();
+            GlobalVar.requiredDataMissing("Project Owner", mainApp.getPrimaryStage());
         }
         loadProjectTabel();
     }
@@ -225,7 +235,7 @@ public class DashboardController
     @FXML
     private void handleReadStudent()
     {
-        wrapper.readAll();
+        wrapper.readAll(false);
         // wrapper.readStudent();
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.initOwner(mainApp.getPrimaryStage());
@@ -240,14 +250,28 @@ public class DashboardController
     {
         // Getting the student object if user has selected any student in tabelview
         Student studentObj = tbl_student.getSelectionModel().getSelectedItem();
-        mainApp.showStudent(wrapper.getStudent().keySet(), studentObj);
+        if (studentObj != null)
+        {
+            mainApp.showStudent(wrapper.getStudent().keySet(), studentObj);
+        }
+        else
+        {
+            GlobalVar.selectionMissingError(mainApp.getPrimaryStage());
+        }
     }
 
     @FXML
     private void handleAddPreference()
     {
         Student studentObj = tbl_student.getSelectionModel().getSelectedItem();
-        mainApp.showAddPreference(wrapper.getProject().keySet(), studentObj);
+        if (studentObj != null)
+        {
+            mainApp.showAddPreference(wrapper.getProject().keySet(), studentObj);
+        }
+        else
+        {
+            GlobalVar.selectionMissingError(mainApp.getPrimaryStage());
+        }
     }
 
     @FXML
@@ -255,30 +279,13 @@ public class DashboardController
     {
         if (!(wrapper.getProject().isEmpty() && wrapper.getStudent().isEmpty()))
         {
-            mainApp.showAddTeam(wrapper.getStudent().keySet(), wrapper.getProject().keySet());
+            mainApp.showAddTeam();
         }
         else
         {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(mainApp.getPrimaryStage());
-            alert.setTitle("Project or/and Students Missing");
-            alert.setHeaderText("Atleast one Project and four Students required");
-            alert.setContentText("Please use the 'Read Student' button to load projects and students");
-            alert.showAndWait();
+            GlobalVar.requiredDataMissing("Project and Student", mainApp.getPrimaryStage());
         }
         loadTeamTabel();
-    }
-
-    @FXML
-    private void handleDataBaseRead()
-    {
-
-    }
-
-    @FXML
-    private void handleDataBaseWrite()
-    {
-
     }
 
     @FXML

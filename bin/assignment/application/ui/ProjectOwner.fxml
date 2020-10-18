@@ -27,7 +27,7 @@
             <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Owner ID" GridPane.valignment="TOP">
+            <Label text="*Owner ID" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -35,7 +35,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label text="First Name" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <Label text="*First Name" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -43,7 +43,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label text="Last Name" GridPane.rowIndex="2" GridPane.valignment="TOP">
+            <Label text="*Last Name" GridPane.rowIndex="2" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -51,7 +51,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="99.0" text="Role" GridPane.rowIndex="3" GridPane.valignment="TOP">
+            <Label prefHeight="20.0" prefWidth="99.0" text="*Role" GridPane.rowIndex="3" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -59,7 +59,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="120.0" text="Email ID" GridPane.rowIndex="4" GridPane.valignment="TOP">
+            <Label prefHeight="20.0" prefWidth="120.0" text="*Email ID" GridPane.rowIndex="4" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
@@ -67,7 +67,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Label prefHeight="20.0" prefWidth="120.0" text="Company ID" GridPane.rowIndex="5" GridPane.valignment="TOP">
+            <Label prefHeight="20.0" prefWidth="120.0" text="*Company ID" GridPane.rowIndex="5" GridPane.valignment="TOP">
                <font>
                   <Font size="14.0" />
                </font>

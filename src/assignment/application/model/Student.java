@@ -7,17 +7,15 @@ import java.util.Map.Entry;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-import assignment.application.GlobalVar;
-
 public class Student
 {
-
     private char personality;
     private String studentID;
     private ArrayList<String> conflict;
     private TreeMap<String, Integer> grades;
     private Map<String, Integer> preference;
 
+    // Class constructor
     public Student()
     {
         this.conflict = new ArrayList<String>();
@@ -25,6 +23,7 @@ public class Student
         setPreference(new HashMap<String, Integer>());
     }
 
+    // Class constructor
     public Student(String studentID, String grades, char personality, String conflict)
     {
         this.conflict = new ArrayList<String>();
@@ -113,7 +112,7 @@ public class Student
 
     public String getConflictString()
     {
-        String temp = GlobalVar.emptyString;
+        String temp = "";
         for (int i = 0; i < conflict.size(); i++)
         {
             temp += conflict.get(i) + " ";
@@ -125,8 +124,8 @@ public class Student
     {
         StringTokenizer st = new StringTokenizer(conflict, " ");
 
-        this.conflict.add(st.hasMoreTokens() ? st.nextToken() : GlobalVar.emptyString);
-        this.conflict.add(st.hasMoreTokens() ? st.nextToken() : GlobalVar.emptyString);
+        this.conflict.add(st.hasMoreTokens() ? st.nextToken() : "");
+        this.conflict.add(st.hasMoreTokens() ? st.nextToken() : "");
 
     }
 

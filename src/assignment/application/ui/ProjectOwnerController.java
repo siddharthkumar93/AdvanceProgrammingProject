@@ -2,6 +2,7 @@ package assignment.application.ui;
 
 import java.util.Set;
 
+import assignment.application.GlobalVar;
 import assignment.application.model.ModelWrapper;
 import assignment.application.model.ProjectOwner;
 import javafx.fxml.FXML;
@@ -43,7 +44,7 @@ public class ProjectOwnerController
             emailID = txt_emailID.getText();
             companyID = cmb_company.getValue();
 
-            ModelWrapper.getInstance().addProjectOwner(new ProjectOwner(firstName, lastName, ownerID, role, emailID, companyID));
+            ModelWrapper.getInstance().addProjectOwner(new ProjectOwner(firstName, lastName, ownerID, role, emailID, companyID), true);
             projectOwnerStage.close();
         }
     }
@@ -57,6 +58,26 @@ public class ProjectOwnerController
 
     private boolean validateInput()
     {
+        if (txt_id.getText().equals(GlobalVar.emptyString) || txt_firstName.getText().equals(GlobalVar.emptyString)
+                    || txt_lastName.getText().equals(GlobalVar.emptyString) || txt_role.getText().equals(GlobalVar.emptyString)
+                    || txt_emailID.getText().equals(GlobalVar.emptyString) || cmb_company.getValue() == null)
+        {
+            GlobalVar.requiredFieldError(projectOwnerStage);
+            return false;
+        }
+        else
+        {
+            try
+            {
+                Integer.parseInt(txt_id.getText());
+            }
+            catch (Exception exception)
+            {
+                GlobalVar.numberFieldError("Project Owner ID", projectOwnerStage);
+                return false;
+            }
+        }
+
         return true;
     }
 

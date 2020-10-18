@@ -9,6 +9,7 @@ import java.util.Map;
 
 import assignment.application.GlobalVar;
 import assignment.application.model.Company;
+import assignment.application.model.MemberExistsException;
 import assignment.application.model.ModelWrapper;
 import assignment.application.model.Project;
 import assignment.application.model.ProjectOwner;
@@ -17,32 +18,41 @@ import assignment.application.model.Team;
 
 public class DatabaseReadWrite
 {
-    // Database path
-    private String dbPath = "jdbc:sqlite:D:/Workplace_Java/Final_Assignment/TeamApplication.db";
-
     private ModelWrapper wrapper = ModelWrapper.getInstance();
 
-    // Class constructor
-    public DatabaseReadWrite()
+    // Method to create table
+    public boolean databaseInitialize()
     {
-        try (Connection connection = DriverManager.getConnection(dbPath))
+        try (Connection connection = DriverManager.getConnection(GlobalVar.dbPath))
         {
             if (connection != null)
             {
                 Statement statement = connection.createStatement();
 
                 // Creating tables in database
+                statement.executeUpdate(GlobalVar.tableExistString.concat("Company"));
                 statement.executeUpdate(GlobalVar.createCompanyString);
+
+                statement.executeUpdate(GlobalVar.tableExistString.concat("ProjectOwner"));
                 statement.executeUpdate(GlobalVar.createProjectOwnerString);
+
+                statement.executeUpdate(GlobalVar.tableExistString.concat("Project"));
                 statement.executeUpdate(GlobalVar.createProjectString);
+
+                statement.executeUpdate(GlobalVar.tableExistString.concat("Student"));
                 statement.executeUpdate(GlobalVar.createStudentString);
+
+                statement.executeUpdate(GlobalVar.tableExistString.concat("Team"));
                 statement.executeUpdate(GlobalVar.createTeamString);
             }
         }
         catch (SQLException exception)
         {
             System.out.println(exception.getMessage());
+            return false;
         }
+
+        return true;
     }
 
     // Writing companies information to database
@@ -51,7 +61,7 @@ public class DatabaseReadWrite
         boolean flag = false;
         Company tempCompany;
         String insertString;
-        try (Connection connection = DriverManager.getConnection(dbPath))
+        try (Connection connection = DriverManager.getConnection(GlobalVar.dbPath))
         {
             if (connection != null)
             {
@@ -81,7 +91,7 @@ public class DatabaseReadWrite
         boolean flag = false;
         ProjectOwner tempOwner;
         String insertString;
-        try (Connection connection = DriverManager.getConnection(dbPath))
+        try (Connection connection = DriverManager.getConnection(GlobalVar.dbPath))
         {
             if (connection != null)
             {
@@ -111,7 +121,7 @@ public class DatabaseReadWrite
         boolean flag = false;
         Project tempProject;
         String insertString;
-        try (Connection connection = DriverManager.getConnection(dbPath))
+        try (Connection connection = DriverManager.getConnection(GlobalVar.dbPath))
         {
             if (connection != null)
             {
@@ -141,7 +151,7 @@ public class DatabaseReadWrite
         boolean flag = false;
         Student tempStudent;
         String insertString;
-        try (Connection connection = DriverManager.getConnection(dbPath))
+        try (Connection connection = DriverManager.getConnection(GlobalVar.dbPath))
         {
             if (connection != null)
             {
@@ -171,7 +181,7 @@ public class DatabaseReadWrite
         boolean flag = false;
         Team tempTeam;
         String insertString;
-        try (Connection connection = DriverManager.getConnection(dbPath))
+        try (Connection connection = DriverManager.getConnection(GlobalVar.dbPath))
         {
             if (connection != null)
             {
@@ -195,10 +205,10 @@ public class DatabaseReadWrite
     }
 
     // Method to read companies from database
-    public void readCompany()
+    public boolean readCompany()
     {
         Company tempComapny;
-        try (Connection connection = DriverManager.getConnection(dbPath))
+        try (Connection connection = DriverManager.getConnection(GlobalVar.dbPath))
         {
             if (connection != null)
             {
@@ -206,47 +216,52 @@ public class DatabaseReadWrite
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM Company;");
                 while (resultSet.next())
                 {
-                    tempComapny = new Company(resultSet.getString(2), resultSet.getString(1), resultSet.getString(3),
+                    tempComapny = new Company(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3),
                                 resultSet.getString(4), resultSet.getString(5));
-                    wrapper.addCompany(tempComapny);
+                    wrapper.addCompany(tempComapny, false);
                 }
             }
         }
         catch (SQLException exception)
         {
             System.out.println(exception.getMessage());
+            return false;
         }
+
+        return true;
     }
 
     // Method to read project owners from database
-    public void readProjectOwner()
+    public boolean readProjectOwner()
     {
         ProjectOwner tempOwner;
-        try (Connection connection = DriverManager.getConnection(dbPath))
+        try (Connection connection = DriverManager.getConnection(GlobalVar.dbPath))
         {
             if (connection != null)
             {
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM ProjectOnwer;");
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM ProjectOwner;");
                 while (resultSet.next())
                 {
-                    tempOwner = new ProjectOwner(resultSet.getString(3), resultSet.getString(1), resultSet.getString(2),
+                    tempOwner = new ProjectOwner(resultSet.getString(3), resultSet.getString(2), resultSet.getString(1),
                                 resultSet.getString(4), resultSet.getString(5), resultSet.getString(6));
-                    wrapper.addProjectOwner(tempOwner);
+                    wrapper.addProjectOwner(tempOwner, false);
                 }
             }
         }
         catch (SQLException exception)
         {
             System.out.println(exception.getMessage());
+            return false;
         }
+        return true;
     }
 
     // Method to read projects from database
-    public void readProject()
+    public boolean readProject()
     {
         Project tempProject;
-        try (Connection connection = DriverManager.getConnection(dbPath))
+        try (Connection connection = DriverManager.getConnection(GlobalVar.dbPath))
         {
             if (connection != null)
             {
@@ -256,21 +271,23 @@ public class DatabaseReadWrite
                 {
                     tempProject = new Project(resultSet.getString(2), resultSet.getString(1), resultSet.getString(3),
                                 resultSet.getString(4), resultSet.getString(5));
-                    wrapper.addProject(tempProject);
+                    wrapper.addProject(tempProject, false);
                 }
             }
         }
         catch (SQLException exception)
         {
             System.out.println(exception.getMessage());
+            return false;
         }
+        return true;
     }
 
     // Method to read student details from database
-    public void readStudent()
+    public boolean readStudent()
     {
         Student tempStudent;
-        try (Connection connection = DriverManager.getConnection(dbPath))
+        try (Connection connection = DriverManager.getConnection(GlobalVar.dbPath))
         {
             if (connection != null)
             {
@@ -288,13 +305,16 @@ public class DatabaseReadWrite
         catch (SQLException exception)
         {
             System.out.println(exception.getMessage());
+            return false;
         }
+        return true;
     }
 
-    public void readTeam()
+    // Method to read team form database and update the team map
+    public boolean readTeam()
     {
         Team tempTeam;
-        try (Connection connection = DriverManager.getConnection(dbPath))
+        try (Connection connection = DriverManager.getConnection(GlobalVar.dbPath))
         {
             if (connection != null)
             {
@@ -302,14 +322,24 @@ public class DatabaseReadWrite
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM Team;");
                 while (resultSet.next())
                 {
-                    tempTeam = new Team(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3));
-                    wrapper.addTeam(tempTeam);
+                    try
+                    {
+                        tempTeam = new Team(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3));
+                        wrapper.addTeam(tempTeam);
+                    }
+                    catch (MemberExistsException expection)
+                    {
+
+                        expection.printStackTrace();
+                    }
                 }
             }
         }
         catch (SQLException exception)
         {
             System.out.println(exception.getMessage());
+            return false;
         }
+        return true;
     }
 }

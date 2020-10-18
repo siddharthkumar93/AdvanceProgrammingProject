@@ -8,11 +8,7 @@ public class Company
     private String companyURL;
     private String address;
 
-    public Company()
-    {
-
-    }
-    
+    // Class constructor
     public Company(String companyID, String companyName, String abnNumber, String companyURL, String address)
     {
         this.companyID = companyID;
@@ -22,6 +18,7 @@ public class Company
         this.address = address;
     }
 
+    // getter-setter for companyID
     public String getCompanyID()
     {
         return companyID;
@@ -32,6 +29,7 @@ public class Company
         this.companyID = companyID;
     }
 
+    // getter-setter for companyName
     public String getCompanyName()
     {
         return companyName;
@@ -42,6 +40,7 @@ public class Company
         this.companyName = companyName;
     }
 
+    // getter-setter for ABN number
     public String getAbnNumber()
     {
         return abnNumber;
@@ -52,6 +51,7 @@ public class Company
         this.abnNumber = abnNumber;
     }
 
+    // getter-setter for companyURL
     public String getCompanyURL()
     {
         return companyURL;
@@ -62,6 +62,7 @@ public class Company
         this.companyURL = companyURL;
     }
 
+ // getter-setter for company address
     public String getAddress()
     {
         return address;
