@@ -1,6 +1,7 @@
 package assignment.application.ui;
 
 import assignment.application.model.Company;
+import assignment.application.model.ModelWrapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -17,22 +18,10 @@ public class CompanyController
     private TextField txt_id, txt_name, txt_abn, txt_url, txt_address;
 
     private Stage companyStage;
-    private Company company;
-    private boolean okClicked = false;
 
     public void setDialogStage(Stage companyDialogStage)
     {
         this.companyStage = companyDialogStage;
-    }
-
-    public void setCompany(Company company)
-    {
-        this.company = company;
-    }
-
-    public boolean isOkClicked()
-    {
-        return okClicked;
     }
 
     // Add button event handler
@@ -48,9 +37,9 @@ public class CompanyController
             abnNumber = txt_abn.getText();
             companyURL = txt_url.getText();
             address = txt_address.getText();
-            company.setAll(companyID, companyName, abnNumber, companyURL, address);
-            
-            okClicked = true;
+   
+            ModelWrapper.getInstance().addCompany( new Company(companyID, companyName, abnNumber, companyURL, address));
+    
             companyStage.close();
         }
         else

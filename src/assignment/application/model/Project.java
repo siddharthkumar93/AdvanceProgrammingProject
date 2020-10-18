@@ -29,7 +29,7 @@ public class Project
         setRanking(ranking);
     }
     
-    public void setAll(String title, String projectID, String description, String ownerID, TreeMap<String, Integer> ranking)
+    public Project(String title, String projectID, String description, String ownerID, TreeMap<String, Integer> ranking)
     {
         this.title = title;
         this.projectID = projectID;

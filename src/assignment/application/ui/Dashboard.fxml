@@ -5,22 +5,24 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" stylesheets="@Theme.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assignment.application.ui.DashboardController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="510.0" minWidth="800.0" prefHeight="510.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="assignment.application.ui.DashboardController">
    <children>
-      <Button fx:id="btn_dbRead" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="30.0" prefWidth="120.0" text="DataBase Read" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="20.0" />
-      <Button fx:id="btn_dbWrite" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="30.0" prefWidth="120.0" text="DataBase Write" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0" />
-      <Button fx:id="btn_dbInitialize" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="30.0" prefWidth="120.0" text="DataBase Initialize" AnchorPane.rightAnchor="270.0" AnchorPane.topAnchor="20.0" />
-      <VBox prefHeight="400.0" prefWidth="180.0" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Button fx:id="btn_loadData" layoutY="10.0" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="40.0" prefWidth="160.0" text="Load Data" AnchorPane.rightAnchor="180.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+      <Button fx:id="btn_writeData" layoutY="10.0" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="40.0" prefWidth="160.0" text="Write Data" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Button>
+      <VBox prefHeight="400.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Pane prefHeight="120.0" prefWidth="180.0" />
-            <Button fx:id="btn_company" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" stylesheets="@Theme.css" text="Company" textFill="WHITE">
+            <Pane prefHeight="60.0" prefWidth="180.0" />
+            <Button fx:id="btn_company" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" stylesheets="@Theme.css" text="Company">
                <padding>
                   <Insets left="50.0" />
                </padding>
@@ -28,7 +30,7 @@
                   <Font name="Calibri Bold" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="btn_owner" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" stylesheets="@Theme.css" text="Project Owner" textFill="WHITE">
+            <Button fx:id="btn_owner" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" text="Project Owner">
                <padding>
                   <Insets left="50.0" />
                </padding>
@@ -36,7 +38,7 @@
                   <Font name="Calibri Bold" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="btn_project" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" stylesheets="@Theme.css" text="Project" textFill="WHITE">
+            <Button fx:id="btn_project" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" text="Project">
                <padding>
                   <Insets left="50.0" />
                </padding>
@@ -44,7 +46,7 @@
                   <Font name="Calibri Bold" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="btn_student" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" stylesheets="@Theme.css" text="Student" textFill="WHITE">
+            <Button fx:id="btn_student" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" text="Student">
                <padding>
                   <Insets left="50.0" />
                </padding>
@@ -52,7 +54,7 @@
                   <Font name="Calibri Bold" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="btn_team" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" stylesheets="@Theme.css" text="Team" textFill="WHITE">
+            <Button fx:id="btn_team" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#handleDashboardButtonAction" prefHeight="60.0" prefWidth="180.0" text="Team">
                <padding>
                   <Insets left="50.0" />
                </padding>
@@ -61,172 +63,96 @@
                </font>
             </Button>
          </children></VBox>
-      <AnchorPane layoutX="180.0" prefHeight="600.0" prefWidth="620.0" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane layoutX="180.0" prefHeight="600.0" prefWidth="620.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Pane fx:id="pn_company" prefHeight="480.0" prefWidth="620.0" styleClass="panel" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
+            <AnchorPane fx:id="pn_student" layoutY="60.0" prefHeight="420.0" prefWidth="620.0" style="-fx-background-color: #FFFFEE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
                <children>
-                  <GridPane fx:id="grd_company" prefHeight="460.0" prefWidth="620.0" stylesheets="@Theme.css">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="439.0" minHeight="10.0" prefHeight="396.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="200.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <children>
-                        <TableView fx:id="tbl_company" prefHeight="200.0" prefWidth="200.0">
-                           <columns>
-                              <TableColumn fx:id="col_companyID" editable="false" prefWidth="70.0" text="ID" />
-                              <TableColumn fx:id="col_companyName" editable="false" prefWidth="120.0" text="NAME" />
-                              <TableColumn fx:id="col_companyABN" editable="false" prefWidth="100.0" text="ABN NUMBER" />
-                              <TableColumn fx:id="col_companyUrl" editable="false" prefWidth="140.0" text="URL" />
-                              <TableColumn fx:id="col_companyAddress" editable="false" prefWidth="150.0" text="ADDRESS" />
-                           </columns>
-                        </TableView>
-                        <Button fx:id="btn_addCompany" mnemonicParsing="false" onAction="#handleAddCompany" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Company" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                  </GridPane>
+                  <TableView fx:id="tbl_student" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                    <columns>
+                      <TableColumn fx:id="col_studentID" maxWidth="120.0" minWidth="60.0" text="ID" />
+                      <TableColumn fx:id="col_studentGrade" maxWidth="220.0" minWidth="60.0" prefWidth="220.0" text="GRADE" />
+                        <TableColumn fx:id="col_studentPersonality" maxWidth="120.0" minWidth="100.0" prefWidth="100.0" text="PERSONALITY" />
+                        <TableColumn fx:id="col_studentConflict" minWidth="160.0" prefWidth="200.0" text="CONFLICT" />
+                    </columns>
+                  </TableView>
+                  <Button fx:id="btn_addStudent" layoutX="482.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleUpdateStudent" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Update Details" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="5.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="btn_readStudent" layoutX="3.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleReadStudent" prefHeight="30.0" prefWidth="120.0" text="Read Student" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+                  <Button fx:id="btn_addPreference" layoutX="354.0" layoutY="407.0" mnemonicParsing="false" onAction="#handleAddPreference" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Preference" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="135.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Button>
+               </children></AnchorPane>
+            <AnchorPane fx:id="pn_team" layoutY="60.0" prefHeight="420.0" prefWidth="620.0" style="-fx-background-color: #FFFFEE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+               <children>
+                  <TableView fx:id="tbl_team" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <columns>
+                        <TableColumn fx:id="col_teamID" maxWidth="120.0" minWidth="100.0" prefWidth="100.0" text="ID" />
+                        <TableColumn fx:id="col_teamMembers" maxWidth="400.0" minWidth="197.0" prefWidth="216.0" text="TEAM MEMBER" />
+                        <TableColumn fx:id="col_teamPreference" minWidth="97.0" prefWidth="99.0" text="PREFERENCE %" />
+                        <TableColumn fx:id="col_teamCompentancy" prefWidth="101.0" text="COMPENTANCY" />
+                        <TableColumn fx:id="col_teamSkillGap" prefWidth="83.0" text="SKILL GAP" />
+                     </columns>
+                  </TableView>
+                  <Button fx:id="btn_formTeam" layoutX="330.0" layoutY="380.0" mnemonicParsing="false" onAction="#handleAddTeam" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Form/Edit Team" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="5.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children></AnchorPane>
+            <AnchorPane fx:id="pn_project" layoutY="60.0" prefHeight="420.0" prefWidth="620.0" style="-fx-background-color: #FFFFEE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+               <children>
+                  <TableView fx:id="tbl_project" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <columns>
+                        <TableColumn fx:id="col_projectID" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="ID" />
+                        <TableColumn fx:id="col_projectTitle" minWidth="140.0" prefWidth="140.0" text="TITLE" />
+                        <TableColumn fx:id="col_projectDescription" minWidth="160.0" prefWidth="160.0" text="DESCRIPTION" />
+                        <TableColumn fx:id="col_projectOwnerID" minWidth="100.0" prefWidth="100.0" text=" OWNER ID" />
+                        <TableColumn fx:id="col_projectSkill" minWidth="150.0" prefWidth="150.0" text="REQUIRED SKILL" />
+                     </columns>
+                  </TableView>
+                  <Button fx:id="btn_addProject" mnemonicParsing="false" onAction="#handleAddProject" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Project" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="5.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children></AnchorPane>
+            <AnchorPane fx:id="pn_company" layoutY="60.0" prefHeight="420.0" prefWidth="620.0" style="-fx-background-color: #FFFEEE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+               <children>
+                  <TableView fx:id="tbl_company" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <columns>
+                        <TableColumn fx:id="col_companyID" editable="false" minWidth="50.0" prefWidth="-1.0" text="ID" />
+                        <TableColumn fx:id="col_companyName" editable="false" minWidth="120.0" prefWidth="-1.0" text="NAME" />
+                        <TableColumn fx:id="col_companyABN" editable="false" minWidth="100.0" prefWidth="-1.0" text="ABN NUMBER" />
+                        <TableColumn fx:id="col_companyUrl" editable="false" minWidth="180.0" prefWidth="-1.0" text="URL" />
+                        <TableColumn fx:id="col_companyAddress" editable="false" minWidth="160.0" prefWidth="-1.0" text="ADDRESS" />
+                     </columns>
+                  </TableView>
+                  <Button fx:id="btn_addCompany" mnemonicParsing="false" onAction="#handleAddCompany" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Company" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="5.0" />
                </children>
-            </Pane>
-            <Pane fx:id="pn_owner" layoutY="120.0" prefHeight="480.0" prefWidth="620.0" styleClass="panel" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
+            </AnchorPane>
+            <AnchorPane fx:id="pn_owner" layoutY="60.0" prefHeight="420.0" prefWidth="620.0" style="-fx-background-color: #FFFFEE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
                <children>
-                  <GridPane fx:id="grd_owner" prefHeight="460.0" prefWidth="620.0" stylesheets="@Theme.css">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="439.0" minHeight="10.0" prefHeight="396.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="200.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <children>
-                        <TableView fx:id="tbl_owner" prefHeight="200.0" prefWidth="200.0">
-                           <columns>
-                              <TableColumn fx:id="col_ownerID" prefWidth="70.0" text="ID" />
-                              <TableColumn fx:id="col_ownerName" prefWidth="120.0" text="NAME" />
-                              <TableColumn fx:id="col_ownerRole" minWidth="150.0" prefWidth="150.0" text="ROLE" />
-                              <TableColumn fx:id="col_owenrEmail" minWidth="160.0" prefWidth="160.0" text="E-MAIL ID" />
-                              <TableColumn fx:id="col_ownerCompany" maxWidth="120.0" minWidth="100.0" prefWidth="100.0" text="COMPANY ID" />
-                           </columns>
-                        </TableView>
-                        <Button fx:id="btn_addOwner" mnemonicParsing="false" onAction="#handleAddOwner" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Project Owner" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                  </GridPane>
-               </children></Pane>
-            <Pane fx:id="pn_project" prefHeight="480.0" prefWidth="620.0" styleClass="panel" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
-               <children>
-                  <GridPane fx:id="grd_project" prefHeight="460.0" prefWidth="620.0" stylesheets="@Theme.css">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="439.0" minHeight="10.0" prefHeight="396.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="200.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <children>
-                        <TableView fx:id="tbl_project" prefHeight="200.0" prefWidth="200.0">
-                           <columns>
-                              <TableColumn fx:id="col_projectID" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="ID" />
-                              <TableColumn fx:id="col_projectTitle" minWidth="140.0" prefWidth="140.0" text="TITLE" />
-                              <TableColumn fx:id="col_projectDescription" minWidth="160.0" prefWidth="160.0" text="DESCRIPTION" />
-                              <TableColumn fx:id="col_projectOwnerID" minWidth="100.0" prefWidth="100.0" text=" OWNER ID" />
-                              <TableColumn fx:id="col_projectSkill" minWidth="150.0" prefWidth="150.0" text="REQUIRED SKILL" />
-                           </columns>
-                        </TableView>
-                        <Button fx:id="btn_addProject" mnemonicParsing="false" onAction="#handleAddProject" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Project" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                  </GridPane>
-               </children></Pane>
-            <Pane fx:id="pn_student" layoutY="120.0" prefHeight="480.0" prefWidth="620.0" styleClass="panel" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
-               <children>
-                  <GridPane fx:id="grd_student" prefHeight="460.0" prefWidth="620.0" stylesheets="@Theme.css">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints maxHeight="439.0" minHeight="10.0" prefHeight="396.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="200.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <children>
-                        <TableView fx:id="tbl_student" prefHeight="200.0" prefWidth="200.0">
-                          <columns>
-                            <TableColumn fx:id="col_studentID" maxWidth="120.0" minWidth="60.0" text="ID" />
-                            <TableColumn fx:id="col_studentGrade" maxWidth="220.0" minWidth="60.0" prefWidth="220.0" text="GRADE" />
-                              <TableColumn fx:id="col_studentPersonality" maxWidth="120.0" minWidth="100.0" prefWidth="100.0" text="PERSONALITY" />
-                              <TableColumn fx:id="col_studentConflict" minWidth="160.0" prefWidth="200.0" text="CONFLICT" />
-                          </columns>
-                        </TableView>
-                        <Button fx:id="btn_addStudent" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add/Edit Student" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </Button>
-                        <Button fx:id="btn_readStudent" mnemonicParsing="false" onAction="#handleReadStudent" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Read Student" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin></Button>
-                        <Button fx:id="btn_addPreference" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Add Prefernce" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets left="140.0" />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                  </GridPane>
-               </children></Pane>
-            <Pane fx:id="pn_team" layoutY="120.0" prefHeight="480.0" prefWidth="620.0" styleClass="panel" stylesheets="@Theme.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
-               <children>
-                  <GridPane fx:id="grd_team" prefHeight="460.0" prefWidth="620.0" stylesheets="@Theme.css">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="439.0" minHeight="10.0" prefHeight="396.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="200.0" minHeight="40.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <children>
-                        <TableView fx:id="tbl_team" prefHeight="200.0" prefWidth="200.0">
-                           <columns>
-                              <TableColumn fx:id="col_teamID" maxWidth="120.0" minWidth="100.0" prefWidth="100.0" text="ID" />
-                              <TableColumn fx:id="col_teamMembers" maxWidth="400.0" minWidth="197.0" prefWidth="216.0" text="TEAM MEMBER" />
-                              <TableColumn fx:id="col_teamPreference" minWidth="97.0" prefWidth="99.0" text="PREFERENCE %" />
-                              <TableColumn fx:id="col_teamCompentancy" prefWidth="101.0" text="COMPENTANCY" />
-                              <TableColumn fx:id="col_teamSkillGap" prefWidth="83.0" text="SKILL GAP" />
-                           </columns>
-                        </TableView>
-                        <Button fx:id="btn_formTeam" mnemonicParsing="false" onAction="#handleAddTeam" prefHeight="30.0" prefWidth="120.0" stylesheets="@Theme.css" text="Form/Edit Team" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                  </GridPane>
-               </children></Pane>
+                  <TableView fx:id="tbl_owner" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <columns>
+                        <TableColumn fx:id="col_ownerID" minWidth="60.0" prefWidth="-1.0" text="ID" />
+                        <TableColumn fx:id="col_ownerName" minWidth="140.0" prefWidth="-1.0" text="NAME" />
+                        <TableColumn fx:id="col_ownerRole" minWidth="150.0" prefWidth="-1.0" text="ROLE" />
+                        <TableColumn fx:id="col_owenrEmail" minWidth="160.0" prefWidth="-1.0" text="E-MAIL ID" />
+                        <TableColumn fx:id="col_ownerCompany" maxWidth="120.0" minWidth="100.0" prefWidth="-1.0" text="COMPANY ID" />
+                     </columns>
+                  </TableView>
+                  <Button fx:id="btn_addOwner" mnemonicParsing="false" onAction="#handleAddOwner" prefHeight="30.0" prefWidth="140.0" stylesheets="@Theme.css" text="Add Project Owner" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="5.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children></AnchorPane>
          </children>
       </AnchorPane>
    </children>

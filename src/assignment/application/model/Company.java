@@ -22,15 +22,6 @@ public class Company
         this.address = address;
     }
 
-    public void setAll (String companyID, String companyName, String abnNumber, String companyURL, String address)
-    {
-        this.companyID = companyID;
-        this.companyName = companyName;
-        this.abnNumber = abnNumber;
-        this.companyURL = companyURL;
-        this.address = address;
-    }
-
     public String getCompanyID()
     {
         return companyID;

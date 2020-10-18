@@ -3,13 +3,13 @@ package assignment.application;
 import java.io.IOException;
 import java.util.Set;
 
-import assignment.application.model.Company;
-import assignment.application.model.Project;
-import assignment.application.model.ProjectOwner;
+import assignment.application.model.Student;
 import assignment.application.ui.CompanyController;
 import assignment.application.ui.DashboardController;
+import assignment.application.ui.PreferenceController;
 import assignment.application.ui.ProjectController;
 import assignment.application.ui.ProjectOwnerController;
+import assignment.application.ui.StudentController;
 import assignment.application.ui.TeamController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +23,7 @@ public class Main extends Application
     private Stage primaryStage;
 
     /**
-     * Primary Application Window 
+     * Primary Application Window
      */
     @Override
     public void start(Stage primaryStage)
@@ -31,13 +31,13 @@ public class Main extends Application
         try
         {
             this.primaryStage = primaryStage;
-            this.primaryStage.setTitle("Team Formation App");
+            this.primaryStage.setTitle(GlobalVar.mainAppTitle);
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("ui/Dashboard.fxml"));
             AnchorPane root = (AnchorPane) loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("ui/Theme.css").toExternalForm());
+            //scene.getStylesheets().add(getClass().getResource("ui/Theme.css").toExternalForm());
             primaryStage.setScene(scene);
 
             DashboardController controller = loader.getController();
@@ -62,7 +62,7 @@ public class Main extends Application
         return primaryStage;
     }
 
-    public boolean showAddCompany(Company company)
+    public void showAddCompany()
     {
         try
         {
@@ -73,7 +73,7 @@ public class Main extends Application
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Add Company");
+            dialogStage.setTitle(GlobalVar.companyWindowTitle);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
             dialogStage.setResizable(false);
@@ -83,21 +83,17 @@ public class Main extends Application
             // Set the person into the controller.
             CompanyController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setCompany(company);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
-
-            return controller.isOkClicked();
         }
         catch (IOException expection)
         {
             expection.printStackTrace();
-            return false;
         }
     }
 
-    public boolean showAddProjectOwner(ProjectOwner owner, Set<String> companyList)
+    public void showAddProjectOwner(Set<String> companyList)
     {
         try
         {
@@ -108,7 +104,7 @@ public class Main extends Application
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Add Project Owner");
+            dialogStage.setTitle(GlobalVar.ownerWindowTitle);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
             dialogStage.setResizable(false);
@@ -118,22 +114,20 @@ public class Main extends Application
             // Set the person into the controller.
             ProjectOwnerController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setOwner(owner);
+            
             controller.setCompanyList(companyList);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
 
-            return controller.isOkClicked();
         }
         catch (IOException expection)
         {
             expection.printStackTrace();
-            return false;
         }
     }
 
-    public boolean showAddProject(Project project, Set<String> ownerList)
+    public void showAddProject(Set<String> ownerList)
     {
         try
         {
@@ -144,7 +138,7 @@ public class Main extends Application
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Add Project");
+            dialogStage.setTitle(GlobalVar.projectWindowTitle);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
             dialogStage.setResizable(false);
@@ -154,23 +148,84 @@ public class Main extends Application
             // Set the person into the controller.
             ProjectController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setProject(project);
             controller.setProjectOwnerList(ownerList);
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
-
-            return controller.isOkClicked();
         }
         catch (IOException expection)
         {
             expection.printStackTrace();
-            return false;
         }
     }
 
-    public void showAddTeam(Set<String> studentList, Set<String> projectList)
+    public void showStudent(Set<String> studentList, Student studentObj)
     {
+        try
+        {
+            // Load the fxml file and create a new stage
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("ui/Student.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(GlobalVar.studentWindowUpdateTitle);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            dialogStage.setResizable(false);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            StudentController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.initializeStudent(studentList, studentObj);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+        }
+        catch (IOException expection)
+        {
+            expection.printStackTrace();
+        }
+    }
+
+    public void showAddPreference(Set<String> projectList, Student studentObj)
+    {
+        try
+        {
+            // Load the fxml file and create a new stage
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("ui/Preference.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(GlobalVar.studentWindowUpdateTitle);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            dialogStage.setResizable(false);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+
+            // Set the person into the controller.
+            PreferenceController controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.initializePreference(projectList, studentObj);
+
+            // Show the dialog and wait until the user closes it
+            dialogStage.showAndWait();
+        }
+        catch (IOException expection)
+        {
+            expection.printStackTrace();
+        }
+    }
+    
+    public void showAddTeam(Set<String> studentList, Set<String> projectList) 
+    {
+
         try
         {
             // Load the fxml file and create a new stage
@@ -180,7 +235,7 @@ public class Main extends Application
 
             // Create the dialog Stage.
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Create/Edit Team");
+            dialogStage.setTitle(GlobalVar.teamWindowTitle);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(primaryStage);
             dialogStage.setResizable(false);
@@ -195,7 +250,6 @@ public class Main extends Application
 
             // Show the dialog and wait until the user closes it
             dialogStage.showAndWait();
-
         }
         catch (IOException expection)
         {

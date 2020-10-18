@@ -26,7 +26,7 @@ public class DashboardController
     private Pane pn_company, pn_project, pn_owner, pn_student, pn_team;
 
     @FXML
-    private Button btn_company, btn_project, btn_owner, btn_student, btn_team, btn_dbInitialize, btn_dbRead, btn_dbWrite;
+    private Button btn_company, btn_project, btn_owner, btn_student, btn_team, btn_loadData, btn_writeData;
 
     @FXML
     private TableView<Company> tbl_company;
@@ -57,7 +57,7 @@ public class DashboardController
 
     @FXML
     private TableColumn<Team, String> col_teamID, col_teamMembers;
-    
+
     @FXML
     private TableColumn<Team, Float> col_teamPreference, col_teamCompentancy, col_teamSkillGap;
 
@@ -99,27 +99,33 @@ public class DashboardController
             pn_team.toFront();
             loadTeamTabel();
         }
-        else if (event.getSource() == btn_dbInitialize)
+        else if (event.getSource() == btn_loadData)
         {
-            dbWrite = new DatabaseReadWrite();
+            loadData();
         }
-        else if (event.getSource() == btn_dbRead)
+        else if (event.getSource() == btn_writeData)
         {
-            dbWrite.readProject();
-            dbWrite.readStudent();
-        }
-        else if (event.getSource() == btn_dbWrite)
-        {
-            if (dbWrite.writeProject(wrapper.getProjectMap()) && dbWrite.writeStudent(wrapper.getStudentMap()))
-            {
-                Alert alert = new Alert(AlertType.CONFIRMATION);
-                alert.setTitle("Success !!!");
-                alert.setHeaderText("Data Successfully written to Project and Student table");
-                alert.showAndWait();
-            }
+           writeData();
         }
     }
 
+    private void loadData()
+    {
+        dbWrite.readProject();
+        dbWrite.readStudent();
+    }
+
+    private void writeData()
+    {
+        if (dbWrite.writeProject(wrapper.getProject()) && dbWrite.writeStudent(wrapper.getStudent()))
+        {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Success !!!");
+            alert.setHeaderText("Data Successfully written to Project and Student table");
+            alert.showAndWait();
+        }
+    }
+    
     private void loadCompanyTabel()
     {
         col_companyID.setCellValueFactory(new PropertyValueFactory<Company, String>("companyID"));
@@ -150,7 +156,7 @@ public class DashboardController
         col_projectSkill.setCellValueFactory(cellData -> Bindings.createStringBinding(() -> cellData.getValue().getRankingString()));
         tbl_project.setItems(FXCollections.observableArrayList(wrapper.getProject().values()));
     }
-    
+
     private void loadStudentTabel()
     {
         col_studentID.setCellValueFactory(new PropertyValueFactory<Student, String>("studentID"));
@@ -163,7 +169,8 @@ public class DashboardController
     private void loadTeamTabel()
     {
         col_teamID.setCellValueFactory(new PropertyValueFactory<Team, String>("teamID"));
-        col_teamMembers.setCellValueFactory(cellData -> Bindings.createStringBinding(() -> cellData.getValue().getTeamMembers().toString()));
+        col_teamMembers
+                    .setCellValueFactory(cellData -> Bindings.createStringBinding(() -> cellData.getValue().getTeamMembers().toString()));
         col_teamPreference.setCellValueFactory(new PropertyValueFactory<Team, Float>("preferncePercentage"));
         col_teamCompentancy.setCellValueFactory(new PropertyValueFactory<Team, Float>("avgStudentSkill"));
         col_teamSkillGap.setCellValueFactory(new PropertyValueFactory<Team, Float>("totalSkillGap"));
@@ -173,26 +180,16 @@ public class DashboardController
     @FXML
     private void handleAddCompany(ActionEvent event)
     {
-        Company tempCompany = new Company();
-        boolean okClicked = mainApp.showAddCompany(tempCompany);
-        if (okClicked)
-        {
-            wrapper.addCompany(tempCompany);
-        }
+        mainApp.showAddCompany();
         loadCompanyTabel();
     }
 
     @FXML
     private void handleAddOwner(ActionEvent event)
     {
-        ProjectOwner tempOwner = new ProjectOwner();
         if (!wrapper.getCompany().isEmpty())
         {
-            boolean okClicked = mainApp.showAddProjectOwner(tempOwner, wrapper.getCompany().keySet());
-            if (okClicked)
-            {
-                wrapper.addProjectOwner(tempOwner);
-            }
+            mainApp.showAddProjectOwner(wrapper.getCompany().keySet());
         }
         else
         {
@@ -209,14 +206,9 @@ public class DashboardController
     @FXML
     private void handleAddProject(ActionEvent event)
     {
-        Project tempProject = new Project();
         if (!wrapper.getProjectOwner().isEmpty())
         {
-            boolean okClicked = mainApp.showAddProject(tempProject, wrapper.getProjectOwner().keySet());
-            if (okClicked)
-            {
-                wrapper.addProject(tempProject);
-            }
+          mainApp.showAddProject(wrapper.getProjectOwner().keySet());  
         }
         else
         {
@@ -231,7 +223,7 @@ public class DashboardController
     }
 
     @FXML
-    private void handleReadStudent(ActionEvent event)
+    private void handleReadStudent()
     {
         wrapper.readAll();
         // wrapper.readStudent();
@@ -241,6 +233,21 @@ public class DashboardController
         alert.setHeaderText("Students prefernce and project data loaded");
         alert.showAndWait();
         loadStudentTabel();
+    }
+
+    @FXML
+    private void handleUpdateStudent()
+    {
+        // Getting the student object if user has selected any student in tabelview
+        Student studentObj = tbl_student.getSelectionModel().getSelectedItem();
+        mainApp.showStudent(wrapper.getStudent().keySet(), studentObj);
+    }
+
+    @FXML
+    private void handleAddPreference()
+    {
+        Student studentObj = tbl_student.getSelectionModel().getSelectedItem();
+        mainApp.showAddPreference(wrapper.getProject().keySet(), studentObj);
     }
 
     @FXML
@@ -277,7 +284,8 @@ public class DashboardController
     @FXML
     private void initialize()
     {
-
+        dbWrite = new DatabaseReadWrite();
+        pn_company.toFront();
     }
 
 }

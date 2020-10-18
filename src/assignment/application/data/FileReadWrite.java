@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -158,14 +157,7 @@ public class FileReadWrite
                 }
                 else if (file.equals("preferences.txt"))
                 {
-                    String pref = "";
-                    Map<String, Integer> temp = new HashMap<String, Integer>(entry.getValue().getPreference());
-
-                    for (Map.Entry<String, Integer> entry2 : temp.entrySet())
-                    {
-                        pref += entry2.getKey() + " " + entry2.getValue() + "   ";
-                    }
-                    myWriter.write(entry.getValue().getStudentID() + "; " + pref + ";\n");
+                    myWriter.write(entry.getValue().getStudentID() + "; " + entry.getValue().getPreferenceString() + ";\n");
                 }
             }
             myWriter.close();

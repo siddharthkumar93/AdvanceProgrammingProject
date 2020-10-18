@@ -2,6 +2,7 @@ package assignment.application.ui;
 
 import java.util.Set;
 
+import assignment.application.model.ModelWrapper;
 import assignment.application.model.ProjectOwner;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,23 +22,10 @@ public class ProjectOwnerController
     private ComboBox<String> cmb_company = new ComboBox<String>();
 
     private Stage projectOwnerStage;
-    private ProjectOwner owner;
-
-    private boolean okClicked = false;
 
     public void setDialogStage(Stage companyDialogStage)
     {
         this.projectOwnerStage = companyDialogStage;
-    }
-
-    public void setOwner(ProjectOwner owner)
-    {
-        this.owner = owner;
-    }
-
-    public boolean isOkClicked()
-    {
-        return okClicked;
     }
 
     // Add button event handler
@@ -55,9 +43,7 @@ public class ProjectOwnerController
             emailID = txt_emailID.getText();
             companyID = cmb_company.getValue();
 
-            owner.setAll(firstName, lastName, ownerID, role, emailID, companyID);
-
-            okClicked = true;
+            ModelWrapper.getInstance().addProjectOwner(new ProjectOwner(firstName, lastName, ownerID, role, emailID, companyID));
             projectOwnerStage.close();
         }
     }
@@ -68,7 +54,6 @@ public class ProjectOwnerController
     {
         projectOwnerStage.close();
     }
-
 
     private boolean validateInput()
     {

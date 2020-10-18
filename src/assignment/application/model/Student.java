@@ -1,32 +1,36 @@
 package assignment.application.model;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-public class Student 
+import assignment.application.GlobalVar;
+
+public class Student
 {
 
     private char personality;
     private String studentID;
-    private String[] conflict;
+    private ArrayList<String> conflict;
     private TreeMap<String, Integer> grades;
     private Map<String, Integer> preference;
 
     public Student()
     {
-        this.conflict = new String[] { "", "" };
+        this.conflict = new ArrayList<String>();
         this.personality = ' ';
         setPreference(new HashMap<String, Integer>());
     }
 
     public Student(String studentID, String grades, char personality, String conflict)
     {
-        this.conflict = new String[] { "", "" };
+        this.conflict = new ArrayList<String>();
         this.grades = new TreeMap<String, Integer>();
         this.preference = new HashMap<String, Integer>();
-        this.setConflict(conflict);
+        this.setConflictString(conflict);
         this.setGrades(grades);
         this.setPersonality(personality);
         this.setStudentID(studentID);
@@ -97,36 +101,33 @@ public class Student
 
     }
 
-    public String[] getConflict()
+    public ArrayList<String> getConflict()
     {
         return conflict;
+    }
+    
+    public void setConflict(ArrayList<String> confict)
+    {
+        this.conflict = confict;
     }
 
     public String getConflictString()
     {
-        String temp = "";
-        for (int i = 0; i < conflict.length; i++)
+        String temp = GlobalVar.emptyString;
+        for (int i = 0; i < conflict.size(); i++)
         {
-            temp += conflict[i] + " ";
+            temp += conflict.get(i) + " ";
         }
         return temp;
     }
 
-    public void setConflict(String conflict)
+    public void setConflictString(String conflict)
     {
         StringTokenizer st = new StringTokenizer(conflict, " ");
-        if (st.hasMoreTokens())
-        {
-            this.conflict[0] = st.nextToken();
-            if (st.hasMoreTokens())
-            {
-                this.conflict[1] = st.nextToken();
-            }
-            else
-            {
-                this.conflict[1] = "";
-            }
-        }
+
+        this.conflict.add(st.hasMoreTokens() ? st.nextToken() : GlobalVar.emptyString);
+        this.conflict.add(st.hasMoreTokens() ? st.nextToken() : GlobalVar.emptyString);
+
     }
 
     public Map<String, Integer> getPreference()
@@ -134,11 +135,22 @@ public class Student
         return preference;
     }
 
+    public String getPreferenceString()
+    {
+        String preference = "";
+        for (Map.Entry<String, Integer> entry2 : this.preference.entrySet())
+        {
+            preference += entry2.getKey() + " " + entry2.getValue() + "  ";
+        }
+        
+        return preference;
+    }
+    
     public void setPreference(Map<String, Integer> preference)
     {
         this.preference = preference;
     }
-
+    
     public void setPreferenceString(String preference)
     {
         StringTokenizer st = new StringTokenizer(preference, " ");

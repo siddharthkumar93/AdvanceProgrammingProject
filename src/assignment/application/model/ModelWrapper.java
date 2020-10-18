@@ -24,9 +24,10 @@ public class ModelWrapper
     private TreeMap<String, ProjectOwner> projectOwner;
     private TreeMap<String, Student> student;
     private TreeMap<String, Team> team;
-    
+
     private static ModelWrapper instance = null;
 
+    // Class constructor
     private ModelWrapper()
     {
         student = new TreeMap<String, Student>();
@@ -35,10 +36,12 @@ public class ModelWrapper
         projectOwner = new TreeMap<String, ProjectOwner>();
         team = new TreeMap<String, Team>();
     }
-    
+
+    // Singleton pattern implementation
+    // Method to pass instance of this class 
     public static ModelWrapper getInstance()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = new ModelWrapper();
         }
@@ -63,6 +66,11 @@ public class ModelWrapper
         data.writeProject(project);
     }
 
+    public void addStudent(Student objStudent)
+    {
+        student.put(objStudent.getStudentID(), objStudent);
+    }
+    
     public void addTeam(Team objTeam)
     {
         team.put(objTeam.getTeamID(), objTeam);
@@ -196,55 +204,18 @@ public class ModelWrapper
         return flag;
     }
 
-    // need update
-    public void capturePersonalities(boolean readStudent)
+    public void updateStudentDetails(Student studentObj, boolean preferenceFlag)
     {
-        boolean flag = true;
-        String studentID, temp, tempConflict = "";
-        char personality = ' ';
+        student.put(studentObj.getStudentID(), studentObj);
 
-        while (flag)
+        if (preferenceFlag)
         {
-
-            try
-            {
-                System.out.println("Enter the student id, whoes record you want update.(Press Q/q to go back)");
-                studentID = input.nextLine().trim().toUpperCase();
-                temp = " ";
-
-                student.get(studentID).setPersonality(personality);
-
-                System.out.println("Enter the conflict students id (upto 2 eg. S10 s20)");
-                temp = input.nextLine();
-
-                // This code can be improved
-                if (!temp.isBlank())
-                {
-                    tempConflict = temp.toUpperCase();
-                    System.out.println("Student conflicts recorded");
-                }
-                else
-                {
-                    System.out.println("No student conflicts recorded");
-                }
-
-                student.get(studentID).setConflict(tempConflict);
-
-            }
-            catch (Exception exp)
-            {
-                System.out.println("In-correct input format. Please enter values in the required format");
-            }
-
+            data.writeStudent(student, "preferences.txt");
         }
-
-        data.writeStudent(student, "studentinfo.txt");
-    }
-
-    public void updatePreferences()
-    {
-        // student.get(studentID).getPreference().put(projID, i);
-        data.writeStudent(student, "preferences.txt");
+        else
+        {
+            data.writeStudent(student, "studentinfo.txt");
+        }
     }
 
     public void shortlistProjects()
@@ -321,22 +292,12 @@ public class ModelWrapper
         prefPercentageSD = Math.sqrt(totalPrefPercentage / team.size());
         skillCompentancySD = Math.sqrt(totalSkillCompentancy / team.size());
         skillGapSD = Math.sqrt(totalSkillGap / team.size());
-        
+
         teamMetricSD.add(prefPercentageSD);
         teamMetricSD.add(skillCompentancySD);
         teamMetricSD.add(skillGapSD);
-        
+
         return teamMetricSD;
-    }
-
-    public Map<String, Project> getProjectMap()
-    {
-        return project;
-    }
-
-    public Map<String, Student> getStudentMap()
-    {
-        return student;
     }
 
     // Method to generate heuristic suggestions

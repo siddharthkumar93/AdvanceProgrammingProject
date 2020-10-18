@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.StringTokenizer;
+
+import assignment.application.GlobalVar;
 
 /**
  * @author Siddharth Kumar
@@ -35,6 +38,16 @@ public class Team
         avgStudentSkill = 0f;
         preferncePercentage = 0f;
     }
+    
+    public Team(String teamID, String teamName, String teamMembers)
+    {
+        this.teamID = teamID;
+        this.teamName = teamName;
+        this.setTeamMembers(teamMembers);
+        avgStudentSkillMap = new HashMap<String, Float>();
+        avgStudentSkill = 0f;
+        preferncePercentage = 0f;
+    }
 
     public String getTeamID()
     {
@@ -46,9 +59,29 @@ public class Team
         return teamMembers;
     }
 
+    public String getTeamMembersString()
+    {
+        String teamMembers = GlobalVar.emptyString;
+        for(String member : this.teamMembers)
+        {
+            teamMembers.concat(member).concat(" ");
+        }
+        
+        return teamMembers;
+    }
+    
     public void setTeamMembers(ArrayList<String> teamMembers)
     {
         this.teamMembers = teamMembers;
+    }
+    
+    public void setTeamMembers(String temaMembers)
+    {
+        StringTokenizer st = new StringTokenizer(temaMembers, " ");
+        while (st.hasMoreTokens())
+        {
+            this.teamMembers.add(st.nextToken());
+        }
     }
 
     public float getAverageStudentSkill()

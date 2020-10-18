@@ -3,6 +3,7 @@ package assignment.application.ui;
 import java.util.Set;
 import java.util.TreeMap;
 
+import assignment.application.model.ModelWrapper;
 import assignment.application.model.Project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,8 +18,7 @@ import javafx.stage.Stage;
 public class ProjectController
 {
     private Stage projectStage;
-    private Project project;
-    private ObservableList<Integer> value = FXCollections.observableArrayList(1,2,3,4);
+    private ObservableList<Integer> ratingValue = FXCollections.observableArrayList(1,2,3,4);
     
     @FXML
     private Button btn_ok, btn_cancel;
@@ -33,32 +33,20 @@ public class ProjectController
     private ComboBox<String> cmb_projectOwnerID = new ComboBox<String>();
     
     @FXML
-    private ChoiceBox<Integer> chb_a = new ChoiceBox<Integer>(value);
+    private ChoiceBox<Integer> chb_a = new ChoiceBox<Integer>(ratingValue);
     
     @FXML
-    private ChoiceBox<Integer> chb_n = new ChoiceBox<Integer>(value);
+    private ChoiceBox<Integer> chb_n = new ChoiceBox<Integer>(ratingValue);
     
     @FXML
-    private ChoiceBox<Integer> chb_p = new ChoiceBox<Integer>(value);
+    private ChoiceBox<Integer> chb_p = new ChoiceBox<Integer>(ratingValue);
     
     @FXML
-    private ChoiceBox<Integer> chb_w = new ChoiceBox<Integer>(value);
-
-    private boolean okClicked = false;
+    private ChoiceBox<Integer> chb_w = new ChoiceBox<Integer>(ratingValue);
 
     public void setDialogStage(Stage projectStage)
     {
         this.projectStage = projectStage;
-    }
-
-    public void setProject(Project project)
-    {
-        this.project = project;
-    }
-
-    public boolean isOkClicked()
-    {
-        return okClicked;
     }
 
     // Add button event handler
@@ -78,9 +66,9 @@ public class ProjectController
             ranking.put("N", chb_n.getValue());
             ranking.put("P", chb_p.getValue());
             ranking.put("W", chb_w.getValue());
-            project.setAll(title, projectID, description, ownerID, ranking);
-
-            okClicked = true;
+            
+            ModelWrapper.getInstance().addProject(new Project(title, projectID, description, ownerID, ranking));
+            
             projectStage.close();
         }
     }
